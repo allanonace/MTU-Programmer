@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Users Encrypted="true">
+  <user>
+    <name>INSTALL1</name>
+    <pass>6A6C60B602D435E7</pass>
+  </user>
+  <user>
+    <name>INSTALL2</name>
+    <pass>6A6C60B602D435E7</pass>
+  </user>
+  <user>
+    <name>Bob</name>
+    <pass>9BFA1831B2529666F9DF84C0136247AD</pass>
+  </user>
+  <user>
+    <name>test</name>
+    <pass>test</pass>
+  </user>
+    
+</Users>

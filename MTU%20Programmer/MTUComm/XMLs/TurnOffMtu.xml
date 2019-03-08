@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MtuScript>
+<userName>s06048-1</userName>
+<logFile>TurnOffMtuResult.xml</logFile>
+<action type="TurnOffMtu"/>
+</MtuScript>

@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C575974E-22A1-4C63-B127-4C89D873DBA3}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{c9e5eea5-ca05-42a1-839b-61506e0a37df}</TemplateGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>aclara_meters.Droid</RootNamespace>
+    <AssemblyName>aclara_meters.Android</AssemblyName>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <AndroidKeyStore>false</AndroidKeyStore>
+    <AndroidSigningKeyStore>C:\Users\h.foronda\aclara_android_key.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>aclara_key</AndroidSigningStorePass>
+    <AndroidSigningKeyPass>aclara_key</AndroidSigningKeyPass>
+    <AndroidSigningKeyAlias>aclara_android_key</AndroidSigningKeyAlias>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1029999" />
+    <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.CardView" Version="28.0.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="28.0.0.1" />
+    <PackageReference Include="nexus.core">
+      <Version>0.34.2</Version>
+    </PackageReference>
+    <PackageReference Include="Acr.UserDialogs">
+      <Version>7.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="ble.net-android">
+      <Version>1.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugin.Geolocator">
+      <Version>4.5.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.Permissions">
+      <Version>3.0.0.12</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs">
+      <Version>28.0.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Auth">
+      <Version>1.6.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Splat">
+      <Version>6.1.7</Version>
+    </PackageReference>
+    <PackageReference Include="Acr.Support">
+      <Version>2.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugins.Settings">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugin.DeviceInfo">
+      <Version>4.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>1.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Numerics.Vectors">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.Multilingual">
+      <Version>1.1.6-beta</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="BorderlessEntryRenderer.cs" />
+    <Compile Include="BorderlessPickerRenderer.cs" />
+    <Compile Include="ViewCellTransparent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Helpers\TranslateExtension.txt" />
+    <None Include="Resources\refreshsignal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Tabbar.axml" />
+    <AndroidResource Include="Resources\layout\Toolbar.axml" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\icon.xml" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\icon_round.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\drawable\turnoff_icon.png" />
+    <AndroidResource Include="Resources\drawable\readmtu_icon.png" />
+    <AndroidResource Include="Resources\drawable\replaceMeter.png" />
+    <AndroidResource Include="Resources\drawable\repMTUrepmeter.png" />
+    <AndroidResource Include="Resources\drawable\addMTUaddmeter.png" />
+    <AndroidResource Include="Resources\drawable\addMTUrepmeter.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_high_white.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_mid_white.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_low_white.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_empty_white.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_high_white.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_mid_white.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_low_white.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_empty_white.png" />
+    <AndroidResource Include="Resources\drawable\bluetooth_cfg_icon.png" />
+    <AndroidResource Include="Resources\drawable\background_menu.png" />
+    <AndroidResource Include="Resources\drawable\aclara_logo_menu.png" />
+    <AndroidResource Include="Resources\drawable\aclara_settings_logo.png" />
+    <AndroidResource Include="Resources\drawable\aclara_logo_login.png" />
+    <AndroidResource Include="Resources\drawable\iconx3.png" />
+    <AndroidResource Include="Resources\drawable\iconx2.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_high.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_mid.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_low.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar_empty.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_high.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_mid.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_low.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar_empty.png" />
+    <AndroidResource Include="Resources\drawable\logs_button.png" />
+    <AndroidResource Include="Resources\drawable\about_button.png" />
+    <AndroidResource Include="Resources\drawable\icon_detail_ble.png" />
+    <AndroidResource Include="Resources\drawable\battery_toolbar.png" />
+    <AndroidResource Include="Resources\drawable\rssi_toolbar.png" />
+    <AndroidResource Include="Resources\drawable\ble_icon_device.png" />
+    <AndroidResource Include="Resources\drawable\user_menu_icon.png" />
+    <AndroidResource Include="Resources\drawable\installConfirm.png" />
+    <AndroidResource Include="Resources\drawable\replaceMTU.png" />
+    <AndroidResource Include="Resources\drawable\addMTU.png" />
+    <AndroidResource Include="Resources\drawable\settings_icon.png" />
+    <AndroidResource Include="Resources\drawable\logoff_icon.png" />
+    <AndroidResource Include="Resources\drawable\aclara_user_black.png" />
+    <AndroidResource Include="Resources\drawable\close_menu_icon.png" />
+    <AndroidResource Include="Resources\drawable\hamburger_icon.png" />
+    <AndroidResource Include="Resources\drawable\aclara_key_black.png" />
+    <AndroidResource Include="Resources\drawable\box_input_progress_settings.png" />
+    <AndroidResource Include="Resources\drawable\back_arrow.png" />
+    <AndroidResource Include="Resources\drawable\activity_icon.png" />
+    <AndroidResource Include="Resources\drawable\error_icon.png" />
+    <AndroidResource Include="Resources\drawable\checkbox_off.png" />
+    <AndroidResource Include="Resources\drawable\checkbox_on.png" />
+    <AndroidResource Include="Resources\drawable\sync_button.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_btn.png" />
+    <AndroidResource Include="Resources\drawable\read_mtu_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable\read_mtu_btn.png" />
+    <AndroidResource Include="Resources\drawable\box_input_progress.png" />
+    <AndroidResource Include="Resources\drawable\icon_button_ble_detail.png" />
+    <AndroidResource Include="Resources\drawable\battery_icon.png" />
+    <AndroidResource Include="Resources\drawable\rssi_icon.png" />
+    <AndroidResource Include="Resources\drawable\contacts.png" />
+    <AndroidResource Include="Resources\drawable\hamburger.png" />
+    <AndroidResource Include="Resources\drawable\signal0.png" />
+    <AndroidResource Include="Resources\drawable\error.png" />
+    <AndroidResource Include="Resources\drawable\settings2.png" />
+    <AndroidResource Include="Resources\drawable\replaceMTU2.png" />
+    <AndroidResource Include="Resources\drawable\signal0_bw.png" />
+    <AndroidResource Include="Resources\drawable\settings3.png" />
+    <AndroidResource Include="Resources\drawable\rep_meter_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable\rep_mtu_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable\folder.png" />
+    <AndroidResource Include="Resources\drawable\shadoweffect.png" />
+    <AndroidResource Include="Resources\drawable\rep_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable\rep_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable\rep_mtu_btn.png" />
+    <AndroidResource Include="Resources\drawable\rep_mtu_btn_black.png" />
+    <AndroidResource Include="Resources\drawable\signal0_black.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_btn_black.png" />
+    <AndroidResource Include="Resources\drawable\read_mtu_btn_black.png" />
+    <AndroidResource Include="Resources\layout\SplashScreen.xml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\aclara_logo_menu_splash.png" />
+    <AndroidResource Include="Resources\drawable\shadow_dialog.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_rep_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable\logs_file_button.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable\add_mtu_rep_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable\ble_puck_disc_icon.png" />
+    <AndroidResource Include="Resources\drawable\ble_puck_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\about_button.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_key_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_logo_login.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_logo_menu.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_logo_menu_splash.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_settings_logo.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_user_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\activity_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\addMTU.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\addMTUaddmeter.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\addMTUrepmeter.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_btn.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_rep_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\add_mtu_rep_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\back_arrow.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\background_menu.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_empty.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_empty_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_high.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_high_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_low.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_low_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_mid.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\battery_toolbar_mid_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\ble_icon_device.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\ble_puck_disc_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\ble_puck_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\bluetooth_cfg_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\box_input_progress.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\box_input_progress_settings.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\checkbox_off.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\checkbox_on.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\close_menu_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\contacts.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\error.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\error_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\folder.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\hamburger.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\hamburger_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\icon_button_ble_detail.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\icon_detail_ble.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\iconx2.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\iconx3.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\installConfirm.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\logoff_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\logs_button.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\logs_file_button.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\read_mtu_btn.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\read_mtu_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\read_mtu_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\readmtu_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\repMTUrepmeter.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_meter_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_mtu_btn.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_mtu_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_mtu_btn_bw.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\replaceMTU.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\replaceMTU2.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\replaceMeter.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_empty.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_empty_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_high.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_high_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_low.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_low_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_mid.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rssi_toolbar_mid_white.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\settings2.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\settings3.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\settings_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\shadow_dialog.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\shadoweffect.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\signal0.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\signal0_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\signal0_bw.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\sync_button.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\turnoff_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\user_menu_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\aclara_icon_app.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\gps_icon.png" />
+    <AndroidResource Include="Resources\drawable\gps_icon.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_mtu_rep_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\rep_mtu_rep_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable\rep_mtu_rep_meter_btn_black.png" />
+    <AndroidResource Include="Resources\drawable\rep_mtu_rep_meter_btn.png" />
+    <AndroidResource Include="Resources\drawable\back_menu_puck.png" />
+    <AndroidResource Include="Resources\drawable\refreshsignal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
+    <Folder Include="Resources\drawable-xxhdpi\" />
+    <Folder Include="Resources\drawable-xxxhdpi\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\aclara_meters\aclara_meters.csproj">
+      <Project>{81D262C1-FBC5-40E5-941A-A4CD3727E932}</Project>
+      <Name>aclara_meters</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\fonts\OpenSansBold.ttf" />
+    <AndroidAsset Include="Assets\fonts\OpenSansLight.ttf" />
+    <AndroidAsset Include="Assets\fonts\OpenSansRegular.ttf" />
+    <AndroidAsset Include="Assets\verdana.ttf" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+</Project>

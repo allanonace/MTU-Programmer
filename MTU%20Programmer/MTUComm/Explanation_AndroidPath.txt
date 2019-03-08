@@ -1,0 +1,131 @@
+https://forums.xamarin.com/discussion/3773/system-environment-specialfolder
+https://www.preguntandroid.com/pregunta/535/confundido-por-los-muchos-lugares-de-la-sdcard-virtual
+https://www.reddit.com/r/Android/comments/496sn3/lets_clear_up_the_confusion_regarding_storage_in
+
+Información importante
+----
+El path "/storage/emulated/0" corresponde a la SDCard interna y por eso es lo mismo que "/sdcard",
+pero no siempre existiran las dos, sino que dependerá de cada dispositivo/distro del sistema Android
+La SDCard interna es lo que se ve al conectar el movil al ordenador
+
+Comprobacion de directorios que referencia la enumeracion Environment.SpecialFolder
+Environment.GetFolderPath ( ... );
+----
+Environment.SpecialFolder.AdminTools            : ''
+Environment.SpecialFolder.ApplicationData       : '/data/data/com.aclara.mtu.programmer/files/.config'
+Environment.SpecialFolder.CDBurning             : ''
+Environment.SpecialFolder.CommonAdminTools      : ''
+Environment.SpecialFolder.CommonApplicationData : '/usr/share'
+Environment.SpecialFolder.CommonDesktopDirectory: ''
+Environment.SpecialFolder.CommonDocuments       : ''
+Environment.SpecialFolder.CommonMusic           : ''
+Environment.SpecialFolder.CommonOemLinks        : ''
+Environment.SpecialFolder.CommonPictures        : ''
+Environment.SpecialFolder.CommonProgramFiles    : ''
+Environment.SpecialFolder.CommonProgramFilesX86 : ''
+Environment.SpecialFolder.CommonPrograms        : ''
+Environment.SpecialFolder.CommonStartMenu       : ''
+Environment.SpecialFolder.CommonStartup         : ''
+Environment.SpecialFolder.CommonTemplates       : '/usr/share/templates'
+Environment.SpecialFolder.CommonVideos          : ''
+Environment.SpecialFolder.Cookies               : ''
+Environment.SpecialFolder.Desktop               : '/data/data/com.aclara.mtu.programmer/files/Desktop'
+Environment.SpecialFolder.DesktopDirectory      : '/data/data/com.aclara.mtu.programmer/files/Desktop'
+Environment.SpecialFolder.Favorites             : ''
+Environment.SpecialFolder.Fonts                 : '/data/data/com.aclara.mtu.programmer/files/.fonts'
+Environment.SpecialFolder.History               : ''
+Environment.SpecialFolder.InternetCache         : ''
+Environment.SpecialFolder.LocalApplicationData  : '/data/data/com.aclara.mtu.programmer/files/.local/share'
+Environment.SpecialFolder.LocalizedResources    : ''
+Environment.SpecialFolder.MyComputer            : ''
+Environment.SpecialFolder.MyDocuments           : '/data/data/com.aclara.mtu.programmer/files'
+Environment.SpecialFolder.MyMusic               : '/data/data/com.aclara.mtu.programmer/files/Music'
+Environment.SpecialFolder.MyPictures            : '/data/data/com.aclara.mtu.programmer/files/Pictures'
+Environment.SpecialFolder.MyVideos              : '/data/data/com.aclara.mtu.programmer/files/Videos'
+Environment.SpecialFolder.NetworkShortcuts      : ''
+Environment.SpecialFolder.Personal              : '/data/data/com.aclara.mtu.programmer/files'
+Environment.SpecialFolder.PrinterShortcuts      : ''
+Environment.SpecialFolder.ProgramFiles          : ''
+Environment.SpecialFolder.ProgramFilesX86       : ''
+Environment.SpecialFolder.Programs              : ''
+Environment.SpecialFolder.Recent                : ''
+Environment.SpecialFolder.Resources             : ''
+Environment.SpecialFolder.SendTo                : ''
+Environment.SpecialFolder.StartMenu             : ''
+Environment.SpecialFolder.Startup               : ''
+Environment.SpecialFolder.System                : ''
+Environment.SpecialFolder.SystemX86             : ''
+Environment.SpecialFolder.Templates             : '/data/data/com.aclara.mtu.programmer/files/Templates'
+Environment.SpecialFolder.UserProfile           : '/data/data/com.aclara.mtu.programmer/files'
+Environment.SpecialFolder.Windows               : ''
+
+Código automático de detección de path valido
+----
+private const string SUBPATHFILES = "Android/data/com.aclara.mtu.programmer/files/";
+private const string XML_MTUS     = "Mtu.xml";
+
+private enum PATHS
+{
+	STORAGE_EMULATED_ZERO,
+	STORAGE_EMULATED_LEGACY,
+	STORAGE_SDCARD_ZERO,
+	SDCARD_MNT,
+	SDCARD
+}
+
+private string[] paths =
+{
+	"/storage/emulated/0/",      // Espacio de trabajo del usuario cero/0
+	"/storage/emulated/legacy/", // Enlace simbolico a "/storage/emulated/0/"
+	"/storage/sdcard0/",         // Android >= 4.0
+	"/mnt/sdcard/",              // Android < 4.0
+	"/sdcard/"                   // Enlace simbolico a "/storage/sdcard0/" y "/mnt/sdcard/"
+};
+
+private string GetPath ( PATHS ePath )
+{
+	return paths[ (int)ePath ];
+}
+
+if ( Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android )
+{
+	// Search the first valid path to recover XML files
+	PATHS  ePath;
+	string path;
+	string[] names = Enum.GetNames(typeof(PATHS));
+	for (int i = 0; i < names.Length; i++)
+	{
+		Enum.TryParse<PATHS> ( names[i], out ePath );
+		path = this.GetPath ( ePath );
+
+		if ( Directory.Exists ( this.GetPath ( ePath ) ) &&
+			 File.Exists ( path + SUBPATHFILES + XML_MTUS ) )
+		{
+			mbase_path = path + SUBPATHFILES;
+			break;
+		}
+	}
+}
+
+ZTE
+----
+PATHS.STORAGE_EMULATED_ZERO  : '/storage/emulated/0/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'      -> Dir: False File: False
+PATHS.STORAGE_EMULATED_LEGACY: '/storage/emulated/legacy/Android/data/com.aclara.mtu.programmer/files/Mtu.xml' -> Dir: True  File: True
+PATHS.STORAGE_SDCARD_ZERO    : '/storage/sdcard0/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'         -> Dir: True  File: True
+PATHS.SDCARD_MNT             : '/mnt/sdcard/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'              -> Dir: True  File: True
+PATHS.SDCARD                 : '/sdcard/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'                  -> Dir: True  File: True
+
+NEXUS
+----
+PATHS.STORAGE_EMULATED_ZERO  : '/storage/emulated/0/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'      -> Dir: True  File: True
+PATHS.STORAGE_EMULATED_LEGACY: '/storage/emulated/legacy/Android/data/com.aclara.mtu.programmer/files/Mtu.xml' -> Dir: False File: False
+PATHS.STORAGE_SDCARD_ZERO    : '/storage/sdcard0/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'         -> Dir: False File: False
+PATHS.SDCARD_MNT             : '/mnt/sdcard/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'              -> Dir: True  File: True
+PATHS.SDCARD                 : '/sdcard/Android/data/com.aclara.mtu.programmer/files/Mtu.xml'                  -> Dir: True  File: True
+
+Atención
+----
+De repente ha dejado de funcionar el planteamiento anterior en el ZTE, que no se si lo habrán actualizado,
+y ha pasado a funcionar usar el path "/data/data/com.aclara.mtu.programmer/files/", lo cual antes no servía
+
+El mismo path que devuelven: Environment.GetFolderPath ( Environment.SpecialFolder.MyDocuments|Personal|UserProfile );

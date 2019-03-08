@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Globals>
+  <!-- Global settings -->
+  <!-- User ID maximum and minimum lengths -->
+  <!-- Default values are 10 for max, 1 for min -->
+  <UserIdMaxLength>10</UserIdMaxLength>
+  <UserIdMinLength>3</UserIdMinLength>
+  <!-- Password amximum and minimum lengths -->
+  <!-- Default values are 10 for max, 1 for min -->
+  <PasswordMaxLength>8</PasswordMaxLength>
+  <PasswordMinLength>3</PasswordMinLength>
+  <!-- log file auto purge options, including enable and max -->
+  <!-- file size in kilobytes of all log files -->
+  <!-- Default value is false for AutoPurge, 0 for AutoPurgeSize -->
+  <AutoPurge>false</AutoPurge>
+  <AutoPurgeSize>5</AutoPurgeSize>
+  <!-- Whether the application should log information to the permanent -->
+  <!-- log file in addition to the results log file.  Note: This only -->
+  <!-- applies when in scripting mode. -->
+  <ScriptOnly>false</ScriptOnly>
+  <!-- Default COM port to use if the interface card is not found -->
+  <!-- Only used as fallback, no default value, should be omitted -->
+  <ComPort>COM6</ComPort>
+  <!-- Number of seconds before reading or writing the MTU -->
+  <!-- Default is 5 seconds -->
+  <ReadDelay>3</ReadDelay>
+  <!-- Number of digits the MTU ID should be formatted to, with leading 0's -->
+  <!-- Default is no formatting, just display the number as read -->
+  <MtuIdLength>8</MtuIdLength>
+  <!-- Number of characters the meter serial number is allowed to be -->
+  <!-- Default value is 12 -->
+  <MeterNumberLength>15</MeterNumberLength>
+  <!-- Account number length -->
+  <!-- Default is 7 -->
+  <AccountLength>9</AccountLength>
+  <!-- What the Account number field should be called -->
+  <!-- Default is "Account #" -->
+  <AccountLabel>Service Pt. ID</AccountLabel>
+  <!-- What the Work Order field should be called -->
+  <!-- Default is "Work Order" -->
+  <WorkOrderLabel>Field Order</WorkOrderLabel>
+  <!-- The maximum number of characters the work order can have. -->
+  <!-- Default is 15 -->
+  <WorkOrderLength>20</WorkOrderLength>
+  <!--  -->
+  <XmitTimer>65793</XmitTimer>
+  <WakeUpCount>32</WakeUpCount>
+  <!-- Default transmit and read intervals -->
+  <!-- If omitted, no default values are used -->
+  <NormXmitInterval>12 Hrs</NormXmitInterval>
+  <TempXmitInterval>None</TempXmitInterval>
+  <TempXmitCount>0</TempXmitCount>
+  <!-- Default transmit/read intervals for electric MTUs -->
+  <!-- If omitted, no default values are used -->
+  <ElectricPort1_2Interval>60</ElectricPort1_2Interval>
+  <ElectricPort3_4Interval>120</ElectricPort3_4Interval>
+  <!-- The following lines allow specifying alternate locations for  -->
+  <!-- the permanent activitnonExistingMtuIdy log file. The order in which the logs  -->
+  <!-- are searched is the order they appear in this file.  Note     -->
+  <!-- that the application directory will be automatically appended -->
+  <!-- by the application as an absolute last case fall back for the -->
+  <!-- logging.                                                      -->
+  <!-- LogLocation>\SystemCF2</LogLocation>
+	<LogLocation>\Mounted Volume\Activity</LogLocation -->
+  <LogLocation>C:\Development\StarProgrammer2005\Aclara StarSystemPC\Aclara StarSystemPC\bin\Debug</LogLocation>
+  <LogLocation>C:\test</LogLocation>
+  <!-- Config Files Locations (can be optional) -->
+  <ConfigLocation>C:\Development\StarProgrammer2005\Aclara StarSystemPC\Aclara StarSystemPC\bin\Debug</ConfigLocation>
+  <!-- Switch to Report that Log file is not secure: Message Box after programming MTU -->
+  <!-- Default is true -->
+  <ReportLogLocationStatus>false</ReportLogLocationStatus>
+  <!-- Show Error Message in script mode -->
+  <!-- Default is true -->
+  <ShowScriptErrorMessage>false</ShowScriptErrorMessage>
+  <!-- Show Vendor and Model for Meters during programming MTU -->
+  <!-- Default is false -->
+  <ShowMeterVendor>true</ShowMeterVendor>
+  <!-- The following line specifies the location for the appointments file.    -->
+  <!-- If this line is omitted, it will default to the current data directory. -->
+  <AppointmentsLocation>C:\Development\StarProgrammer2005\Aclara StarSystemPC\Aclara StarSystemPC\bin\Debug</AppointmentsLocation>
+  <!-- This option allows the user to specify the name of the appointments file -->
+  <AppointmentsName>Appointments.xml</AppointmentsName>
+  <!-- The following line applies only to the log files generated. When set to -->
+  <!-- true, it will force the log files to conform to 8.3 format.  The new    -->
+  <!-- format is MMddyyHH.xml.  Note that if the logger runs into serious      -->
+  <!-- problems, it will still exceed the 8.3 specification, however, this     -->
+  <!-- shouldn't happen under normal circumstances, and most people should not -->
+  <!-- be using this option.                                                   -->
+  <Use8.3>false</Use8.3>
+  <!--    FTP Parametrs	Only for PC		-->
+  <ftpUserName>anonymous</ftpUserName>
+  <ftpPassword>
+  </ftpPassword>
+  <ftpRemoteHost>inteltest</ftpRemoteHost>
+  <ftpRemotePath>/HHFiles//testagain\</ftpRemotePath>
+  <ftpTransferredPath>c:\temp</ftpTransferredPath>
+  <!-- The following values control what will be prompted when programming the MTUs -->
+  <!-- ============================================================================ -->
+  <!-- Whether the work order prompt should appear or not -->
+  <!-- Default value is true -->
+  <WorkOrderRecording>true</WorkOrderRecording>
+  <!-- Whether the Meter Works or not prompt should be displayed -->
+  <!-- Default value is true -->
+  <MeterWorkRecording>false</MeterWorkRecording>
+  <!-- Whether the appointment screen should be displayed if appointments are found -->
+  <!-- Default value is true -->
+  <ApptScreen>true</ApptScreen>
+  <!-- Whether the account number must be entered twice or not -->
+  <!-- Default value is true -->
+  <AccountDualEntry>false</AccountDualEntry>
+  <!-- Whether the work order prompt should be dual entry or not -->
+  <!-- Default value is true -->
+  <WorkOrderDualEntry>false</WorkOrderDualEntry>
+  <!-- Whether the old meter serial number prompt should be dual entry or not -->
+  <!-- Defaul is true -->
+  <OldSerialNumDualEntry>false</OldSerialNumDualEntry>
+  <!-- Whether the new/current meter serial number prompt should be dual entry or not -->
+  <!-- The default value is true -->
+  <NewSerialNumDualEntry>false</NewSerialNumDualEntry>
+  <!-- Whether the meter reading should be dual entry or not -->
+  <!-- The default value is true -->
+  <ReadingDualEntry>false</ReadingDualEntry>
+  <!-- Whether the old meter reading should be dual entry or not -->
+  <!-- The default is true -->
+  <OldReadingDualEntry>false</OldReadingDualEntry>
+  <!-- Whether the old and new meter readings should be entered in reverse format -->
+  <!-- Default is false -->
+  <ReverseReading>false</ReverseReading>
+  <!-- Whether individual read intervals are allowed or not -->
+  <!-- Default is false -->
+  <IndividualReadInterval>true</IndividualReadInterval>
+  <!-- Whether what was replaced (meter, register or both) should be recorded -->
+  <!-- Default value is true -->
+  <RegisterRecording>false</RegisterRecording>
+  <!-- Whether the new/current meter serial number should be recorded -->
+  <!-- Default value is true -->
+  <UseMeterSerialNumber>true</UseMeterSerialNumber>
+  <!-- Whether the old meter reading should be recorded -->
+  <!-- Default value is true -->
+  <OldReadingRecording>true</OldReadingRecording>
+  <!-- This following options control which buttons are enabled on the main screen -->
+  <!-- The default value for each of these is True -->
+  <ShowAddMtu>true</ShowAddMtu>
+  <ShowAddMtuReplaceMeter>true</ShowAddMtuReplaceMeter>
+  <ShowAddMtuMeter>true</ShowAddMtuMeter>
+  <ShowReplaceMtu>true</ShowReplaceMtu>
+  <ShowReplaceMtuMeter>true</ShowReplaceMtuMeter>
+  <ShowReplaceMeter>true</ShowReplaceMeter>
+  <!-- End of Global settings -->
+  <!-- Start of Cancel Reasons -->
+  <!-- This section defines the options displayed when the user has cancelled -->
+  <!-- a programming of the MTU.  Each option will be one entry in the drop-down -->
+  <!-- There is always a value of "Other", which will allow the user to enter -->
+  <!-- a value in the text box. -->
+  <!-- Note: The number of options is arbitrary and can be any length -->
+  <!-- If this section is omitted, the user will cancel without being asked for a reason -->
+  <!--	<Cancel>
+		<option>Not Home</option>
+		<option>Meter missing</option>
+		<option>Bored</option>
+		<option>On strike</option>
+		<option>Quit</option>
+	</Cancel> -->
+  <!-- End of Cancel Reasons -->
+  <!-- Selectable Options settings -->
+  <!-- These options appear on the last pane of the program MTU screen. -->
+  <!-- If this section is completely omitted, the pane will not appear. -->
+  <!-- The number of options is arbitrary and may be of any length -->
+  <!-- The options that need the most explanations follow: -->
+  <!-- 'name' is the label used by the logger to identify the value -->
+  <!-- 'type' is the type of prompt this is, the two valid entries for this -->
+  <!--        is either "list" or "text" where "list" will make a drop-down -->
+  <!--        with the options listed and "text" will make a text box -->
+  <!-- 'required' is used if the field is required to be answered before -->
+  <!--        the user is allowed to continue.  If this field is omitted, -->
+  <!--        the user may continue with programming without answering the field -->
+  <!-- 'len' only applies to the "text" prompt type, and it determines the -->
+  <!--        maximum allowed characters for the text prompt.  This field -->
+  <!--        is required for the "text" prompt and has no default value -->
+  <!-- 'display' contains the value that is shown on the screen as the name -->
+  <!--        of the prompt. -->
+  <!-- 'minlen' only applies to the "text" prompt type, and it determines the -->
+  <!--        minimum allowed characters for the text prompt.  This field -->
+  <!--        is optional for the "text" prompt and has no default value -->
+  <!--		Designed to work only with 'required' field  -->
+  <!-- 'format' only applies to the "text" prompt type, and it determines the -->
+  <!--        specific characters for the text prompt.  This field -->
+  <!--        is optional for the "text" prompt and has no default value -->
+  <!--		Designed to work only with 'required' field.  -->
+  <!--        It recognized following type: 'numeric' - full expression is decimal digits  -->
+  <!--		'alpha' - full expression is alphabetic letters -->
+  <!--		'alphanumeric' - whether expression is categorized as alphabetic letters or  decimal digits -->
+  <!--		'date' - expression is date or time format or date and time format -->
+  <!--		'time' - expression is date or time format or date and time format -->
+  <!--		with conversion to full datetime format and replacing the value -->
+  <!--		if only time it will add today date, if only date it will add 12:00:00 -->
+  <!--		in this case mostly useful as time. -->
+  <Options>
+    <option name="LocationInfo" type="list" required="true">
+      <display>MTU Location</display>
+      <list>Outside</list>
+      <list>Inside</list>
+      <list>Basement</list>
+    </option>
+    <option name="LocationInfo" type="list" required="true">
+      <display>Meter Location</display>
+      <list>Outside</list>
+      <list>Inside</list>
+      <list>Basement</list>
+    </option>
+    <option name="Construction" type="list">
+      <display>Construction</display>
+      <list>Vinyl</list>
+      <list>Wood</list>
+      <list>Brick</list>
+      <list>Aluminium</list>
+      <list>Other</list>
+    </option>
+  </Options>
+  <!--
+		<option name="PipeType" type="list">
+			<display>Pipe Type</display>
+			<list>PVC</list>
+			<list>Iron</list>
+			<list>Copper</list>
+			<list>Lead</list>
+			<list>Galvanized</list>
+			<list>Other</list>
+		</option> 
+		<option name="Comment" type="text" len="100">
+			<display>Comments</display>
+		</option>
+		<option name="MoreComments" type="text" len="100">
+			<display>More Comments</display>
+		</option>
+		<option name="EvenMoreComments" type="text" len="100">
+			<display>Even More</display>
+		</option>
+		<option name="YesMoreComment" type="text" len="43" format="date">
+			<display>Yes More</display>
+		</option>
+		<option name="AreWeDoneYetComment" type="text" len="102" minlen="10" format="alphanumeric">
+			<display>Are We Done Yet</display>
+		</option>
+		<option name="GettingRediculusComment" type="text" len="37" minlen="15" format="alpha">
+			<display>Getting Rediculus</display>
+		</option>
+	</Options> -->
+  <!-- End of selectable options settings -->
+</Globals>

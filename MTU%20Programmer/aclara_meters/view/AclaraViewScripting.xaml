@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<util:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:util="clr-namespace:aclara_meters.util;assembly=aclara_meters" Title="{Binding PageTitle}" xmlns:Controls="clr-namespace:aclara_meters" NavigationPage.HasBackButton="false" x:Class="aclara_meters.view.AclaraViewScripting">
+    <RelativeLayout IsVisible="true">
+        <ContentView BackgroundColor="White" WidthRequest="1024" x:Name="fondo" IsVisible="true" 
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+            Property=Height,
+            Factor=0}" 
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+            Property=Height,
+            Factor=1}">
+        </ContentView>
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                 Device List Window                                                      -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <ContentView IsVisible="true" x:Name="ContentView_DeviceList" 
+                     RelativeLayout.XConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Width,
+            Factor=0}" 
+                     RelativeLayout.WidthConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Width,
+            Factor=1}" 
+                     RelativeLayout.YConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Height,
+            Factor=0}" 
+                     RelativeLayout.HeightConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Height,
+            Factor=1}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="menu_controller_width" Width="0" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Opacity="1" BackgroundColor="White" Grid.Row="0" Grid.Column="1" Margin="-6,0,0,0" Orientation="Vertical">
+                    <StackLayout BackgroundColor="White" Margin="0">
+                        <StackLayout Margin="0,0,0,0">
+                            <StackLayout Margin="0,0,0,0" HeightRequest="92" BackgroundColor="#6aa2b8">
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout Margin="0,0,0,0" Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                                        <Image x:Name="hamburger_icon" Margin="4,24,0,0" HeightRequest="56" Scale="1" Source="hamburger_icon.png" HorizontalOptions="Start">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer x:Name="back_button" NumberOfTapsRequired="1" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </StackLayout>
+                                    <StackLayout Margin="-20,34,-20,-44" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                                        <Image x:Name="aclara_logo" Scale="1" WidthRequest="256" HeightRequest="128" IsEnabled="false" Margin="0,-64,0,0" Source="aclara_logo_menu.png">
+                                        </Image>
+                                    </StackLayout>
+                                    <StackLayout Margin="0,24,10,0" Opacity="0" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                                        <Image x:Name="battery_level" Margin="0,4,0,0" HeightRequest="32" WidthRequest="32" Scale="1" Source="battery_toolbar_high_white.png">
+                                        </Image>
+                                        <Image x:Name="rssi_level" Margin="6,4,0,0" HeightRequest="20" WidthRequest="20" Scale="1" Source="rssi_toolbar_high_white.png">
+                                        </Image>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <!--  Aqui va la listview -->
+                    </StackLayout>
+                    <ListView Opacity="1" IsPullToRefreshEnabled="true" x:Name="DeviceList" RowHeight="160" SeparatorVisibility="None" SeparatorColor="#6aa2b8" BackgroundColor="White" RefreshAllowed="&#xA;                         true" ItemTapped="OnMenuItemSelectedListDevices">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Controls:ViewCellTransparent>
+                                    <StackLayout Margin="0,0,0,0" Scale="1" Padding="16" Orientation="Horizontal">
+                                        <Image HeightRequest="108" Margin="4,0,0,0" Source="ble_puck_icon.png" />
+                                        <StackLayout Margin="8,0,0,0" Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
+                                            <!-- {Binding Name} -->
+                                            <Label FontSize="32" Text="{Binding deviceName}">
+                                            </Label>
+                                            <Label Margin="4,-4,0,0" FontSize="14" Text="{Binding deviceMacAddress}">
+                                            </Label>
+                                            <StackLayout Margin="0,-4,0,0" Orientation="Horizontal" VerticalOptions="Center">
+                                                <Image Source="{Binding deviceBatteryIcon} " HeightRequest="34" VerticalOptions="Center" />
+                                                <Label Margin="-2,2,0,-2" Text="{Binding deviceBattery}" FontSize="14" VerticalOptions="Center">
+                                                </Label>
+                                                <Image Source="{Binding deviceRssiIcon}" HeightRequest="20" VerticalOptions="Center" />
+                                                <Label Margin="-2,2,0,0" Text="{Binding deviceRssi}" FontSize="14" VerticalOptions="Center">
+                                                </Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Controls:ViewCellTransparent>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </Grid>
+        </ContentView>
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                 Scripting Window                                                        -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <ContentView IsVisible="false" x:Name="ContentView_Scripting" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Width,&#xA;                                     Factor=0}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Width,&#xA;                                     Factor=1}" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Height,&#xA;                                     Factor=0}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Height,&#xA;                                     Factor=1}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Opacity="1" BackgroundColor="White" Grid.Row="0" Grid.Column="1" Margin="-6,0,0,0" Orientation="Vertical">
+                    <StackLayout BackgroundColor="White" Margin="0">
+                        <StackLayout Margin="0,0,0,0">
+                            <StackLayout Margin="0,0,0,0" HeightRequest="92" BackgroundColor="#6aa2b8">
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout Margin="0,0,0,0" Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                                        <Image x:Name="ContentView_Scripting_hamburger_icon" Margin="4,24,0,0" HeightRequest="56" WidthRequest="56" Scale="1" Source="back_arrow.png" HorizontalOptions="Start">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer x:Name="ContentView_Scripting_back_button" NumberOfTapsRequired="1" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </StackLayout>
+                                    <StackLayout Margin="-20,34,-20,-44" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                                        <Image x:Name="ContentView_Scripting_aclara_logo" Scale="1" WidthRequest="256" HeightRequest="128" IsEnabled="false" Margin="0,-64,0,0" Source="aclara_logo_menu.png">
+                                        </Image>
+                                    </StackLayout>
+                                    <StackLayout Margin="0,24,10,0" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                                        <Image x:Name="ContentView_Scripting_battery_level" Margin="0,4,0,0" HeightRequest="32" WidthRequest="32" Scale="1" Source="battery_toolbar_high_white.png">
+                                        </Image>
+                                        <Image x:Name="ContentView_Scripting_rssi_level" Margin="6,4,0,0" HeightRequest="20" WidthRequest="20" Scale="1" Source="rssi_toolbar_high_white.png">
+                                        </Image>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <!--  Aqui va la listview -->
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal" IsVisible="false" Padding="{StaticResource GridPadding}">
+                            <Label Text="Characteristics" FontSize="22" />
+                        </StackLayout>
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label Margin="16,16,0,0" FontSize="22" TextColor="#6aa2b8" Text="Scripting" />
+                            <Image Margin="-16,4,-16,0" WidthRequest="380" HeightRequest="2" BackgroundColor="#6aa2b8" />
+                            <Label Text="Path: " FontSize="18" Margin="12,12,0,-12" WidthRequest="128">
+                            </Label>
+                            <StackLayout BackgroundColor="#6aa2b8" IsClippedToBounds="true" VerticalOptions="FillAndExpand" Margin="12">
+                                <StackLayout BackgroundColor="#f6f6f6" IsClippedToBounds="true" VerticalOptions="FillAndExpand" Margin="1">
+                                    <ScrollView IsClippedToBounds="true" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                        <Label HeightRequest="24" VerticalOptions="CenterAndExpand" x:Name="ContentView_Scripting_fieldpath_script" Text="1" FontSize="16" HorizontalOptions="FillAndExpand" />
+                                    </ScrollView>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout BackgroundColor="#6aa2b8" HorizontalOptions="FillAndExpand" IsClippedToBounds="true" VerticalOptions="FillAndExpand" Margin="12">
+                            <StackLayout BackgroundColor="#efeff5" HorizontalOptions="FillAndExpand" IsClippedToBounds="true" VerticalOptions="FillAndExpand" Margin="1">
+                                <ScrollView IsClippedToBounds="true" HeightRequest="333" VerticalOptions="FillAndExpand">
+                                    <Label VerticalOptions="FillAndExpand" x:Name="ContentView_Scripting_textScript" Text="...." FontSize="16" />
+                                </ScrollView>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                    <!-- LOWER BAR -->
+                    <StackLayout IsVisible="true" IsClippedToBounds="true" HeightRequest="78" BackgroundColor="#6aa2b8">
+                        <Label x:Name="ContentView_Scripting_label_read" LineBreakMode="TailTruncation" Margin="17,22,0,0" FontSize="20" TextColor="White" Text="Push Button to START">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Margin="0,-134,0,20" IsClippedToBounds="true" HorizontalOptions="End">
+                        <Image IsVisible="true" IsEnabled="true" InputTransparent="false" x:Name="ContentView_Scripting_bg_read_mtu_button_img" HeightRequest="96" Margin="0,0,20,10" Scale="1" Source="read_mtu_btn.png" HorizontalOptions="End">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer x:Name="ContentView_Scripting_bg_read_mtu_button" NumberOfTapsRequired="1" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
+        </ContentView>
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <!--                                                                                                                         -->
+        <StackLayout InputTransparent="true" x:Name="backdark_bg" BackgroundColor="Black" HeightRequest="1024" IsVisible="true" WidthRequest="1024" Opacity="0.6">
+        </StackLayout>
+        <StackLayout Orientation="Vertical" InputTransparent="true" VerticalOptions="Center" HorizontalOptions="Center" 
+                     RelativeLayout.YConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Height,
+            Factor=0}" 
+                     RelativeLayout.HeightConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Height,
+            Factor=1}" 
+                     RelativeLayout.WidthConstraint="{ConstraintExpression 
+            Type=RelativeToParent,
+            Property=Width,
+            Factor=1}">
+            <ActivityIndicator Color="#6aa2b8" Opacity="1" x:Name="indicator" 
+                               IsVisible="true" 
+                               IsRunning="true" 
+                               Scale="3" 
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+            <Label  x:Name="txtBuscando"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="25"
+                    Margin="0,50,0,250"
+                    Text="Searching devices..." 
+                    FontSize="Large" 
+                    IsVisible="true" />
+                
+        </StackLayout>
+        <!--   DIALOGS   -->
+        <Image BackgroundColor="Black" x:Name="dialog_open_bg" WidthRequest="1024" IsVisible="false" HeightRequest="1024" Opacity="0.5">
+        </Image>
+        <ContentView Scale="1.2" IsVisible="false" HeightRequest="185" x:Name="turnoff_mtu_background" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Width,&#xA;                                     Factor=0.19}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Width,&#xA;                                     Factor=0.620}" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,&#xA;                                     Property=Height,&#xA;                                     Factor=0.4}">
+            <Frame CornerRadius="6" HasShadow="true" OutlineColor="White" Padding="1, 1, 1, 1" Opacity="1" BackgroundColor="White">
+                <StackLayout Margin="0,0,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <StackLayout x:Name="dialog_logoff" IsVisible="false" Margin="0" Opacity="1">
+                        <Label Margin="12,12,12,12" HorizontalTextAlignment="Center" FontSize="20" Text="Are you sure you want to Log off?">
+                        </Label>
+                        <StackLayout Margin="0,12,0,0" Orientation="Horizontal">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="Yes">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="logoff_ok" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="No">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="logoff_no" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout x:Name="dialog_turnoff_one" IsVisible="false" Margin="0" Opacity="1">
+                        <Label Margin="12,12,12,12" HorizontalTextAlignment="Center" FontSize="20" Text="Are you sure you want to turn off MTU?">
+                        </Label>
+                        <StackLayout Margin="0,12,0,0" Orientation="Horizontal">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="Yes">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="turnoffmtu_ok" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="No">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="turnoffmtu_no" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout x:Name="dialog_turnoff_two" IsVisible="false" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0" Opacity="1">
+                        <Label Margin="12,12,12,12" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="Turning off MTU">
+                        </Label>
+                        <StackLayout Margin="0,12,0,0" Orientation="Horizontal">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="18" Text="Please, wait...">
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout x:Name="dialog_turnoff_three" IsVisible="false" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0" Opacity="1">
+                        <Label Margin="12,12,12,12" HorizontalTextAlignment="Center" FontSize="20" Text="MTU turned off Successfully">
+                        </Label>
+                        <StackLayout Margin="0,12,0,0" Orientation="Horizontal">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="OK">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="turnoffmtu_ok_close" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout x:Name="dialog_replacemeter_one" IsVisible="false" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0" Opacity="1">
+                        <Label Margin="12,12,12,12" HorizontalTextAlignment="Center" FontSize="20" Text="Replace MTU and prepare for reading new MTU">
+                        </Label>
+                        <StackLayout Margin="8,8,0,0" Orientation="Horizontal">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="OK">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="replacemeter_ok" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="Cancel">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="replacemeter_cancel" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout x:Name="dialog_meter_replace_one" IsVisible="false" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0" Opacity="1">
+                        <Label Margin="12,12,12,12" HorizontalTextAlignment="Center" FontSize="20" Text="Replace Meter and prepare for reading MTU">
+                        </Label>
+                        <StackLayout Margin="8,8,0,0" Orientation="Horizontal">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="OK">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="meter_ok" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="#6aa2b8" FontSize="20" Text="Cancel">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="meter_cancel" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </ContentView>
+        <!--  END DIALOGS   -->
+    </RelativeLayout>
+</util:BasePage>

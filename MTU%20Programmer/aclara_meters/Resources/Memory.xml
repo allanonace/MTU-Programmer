@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Memories>
+	<MtuMemory id="14" memory="1"/>
+	<MtuMemory id="15" memory="1"/>
+	<MtuMemory id="16" memory="1"/>
+	<MtuMemory id="17" memory="1"/>
+	<Memory id="1" description="Series 2000/3000 Gas/Water Memory Map Template v47">
+		<Param name="Type" description="Mtu Type" address="0" length="1" readonly="true"/>
+		<Param name="Version" description="Mtu Version" address="1" length="1" readonly="true"/>
+		<Param name="RevisionYear" description="Mtu Revision Year" address="2" length="1" readonly="true"/>
+		<Param name="RevisionMonth" address="1" description="Mtu Revision Month" length="3" readonly="true"/>
+		<Param name="RevisionDay" description="Mtu Revision Day" address="1" length="4" readonly="true"/>
+		<Param name="TemperatureCorrection" description="Mtu Temperature Correction" address="5" length="1" readonly="true"/>
+		<Param name="ID" description="Mtu ID" address="6" length="4" readonly="true"/>
+		<Param name="1WayTxFreq" description="1 Way Tx Frequency" address="10" length="4" readonly="false"/>
+		<Param name="2WayTxFreq" description="2 Way Tx Frequency" address="14" length="4" readonly="false"/>
+		<Param name="2WayRxFreq" description="2 Way Rx Frequency" address="18" length="4" readonly="false"/>
+		<Param name="SystemFlags" description="System Flags" address="22" length="1" readonly="false"/>
+	</Memory>
+</Memories>

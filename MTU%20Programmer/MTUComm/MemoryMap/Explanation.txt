@@ -1,0 +1,146 @@
+﻿Formato XML familias MTU
+----
+<?xml version="1.0" encoding="utf-8"?>
+<Registers>
+
+  <Register>
+    <Id>_string_</Id>
+    <Description>_string_</Description>
+    <Type>int|uint|ulong|bool|char|string</Type>
+    <Address>_integer_</Address>
+    <Size>_integer_</Size>
+    <Write>false|_vacio_</Write>
+    <Custom>_val_1_operacion_|_val_1_mascara_string_|method|_vacio_</Custom>
+  </Register>
+
+  <Overload>
+    <Id>_string_</Id>
+    <Description>_string_</Description>
+    <Registers>
+      <Register>_id_register_param_1_</Register>
+      <Register>_id_register_param_2_</Register>
+    </Registers>
+    <Custom>_val1_valn_operacion_|method|method:id_method</Custom>
+  </Overload>
+
+</Registers>
+
+Register
+----
+Registros presentes en los dispositivos, pudiendo ocupar una o mas posiciones ( bytes ) de memoria
+- Address: Posición en memoria ( byte inicial ) del registro
+- Size   : Cantidad de bytes consecutivos que ocupa el registro
+           pej. Address 3 y Size 4 = Bytes { 3, 4, 5, 6 }
+- Write  : Por defecto los registros seran de solo lectura ( <Write>false</Write> )
+           Para indicar que un campo es de lectura/escritura indicar <Write>true</Write>
+- Custom : Permite procesar el valor del registro que no recuperarlo/leerlo ( get ) directamente
+           - Para registros de tipo numerico se puede indicar una operacion
+		     pej. _val_ + 2 / 3
+           - Para registros de tipo cadena se puede indicar la mascara con la que formatear su valor
+		     pej. Version {0:00}
+		   - También se puede querer usar una función definida en MemoryMapXXX.cs con el mismo nombre del registro mas el
+		     sufijo "_Logic", siendo útil en casos complejos en los que las dos opciones anteriores no sean una opción
+			 Para utilizar esta última funcionalidad habra que indicar <Custom>method</Custom> ( no es case sensitive )
+             pej. Registro 'MtuType' -> Método 'MtuType_Logic'
+			 
+			 Además de poner "method" para referenciar el método automatico ( idRegistro_Logic ), también se puede
+			 indicar un método concreto, para favorecer la reutilización de código y no tener que editar el código
+			 cada vez que se añada un registro que requiera algún tratamiento especial. Se indica con ":idMetodo"
+			 pej. <custom>method:ConvertoToDouble</custom>
+
+			 Cabecera del metodo:
+			 public T DailyRead_Logic ( MemoryRegister<T> MemoryRegister )
+			 En vez de T se tendra que indicar el tipo de valor del registro ( <Type> )
+			 El registro pasado como parametro es una instancia MemoryRegister, para poder acceder/leer los diferentes
+			 campos de cada registro, habiendo de usar la propiedad Value para recuperar el valor del registro
+
+			 pej. Metodo personalizado del registro Daily
+
+			 // family_31xx32xx.xml
+			 <Register>
+			   <Id>DailyRead</Id>
+			   <Description>Daily read</Description>
+			   <Type>int</Type>
+			   <Address>198</Address>
+			   <Size>1</Size>
+			   <Write>true</Write>
+			   <Custom>method</Custom>
+			 </Register>
+
+			 // MemoryMap31xx32xx.cs
+			 public int DailyRead_Logic ( MemoryRegister<int> MemoryRegister )
+			 {
+				 return MemoryRegister.Value;
+			 }
+
+Overload
+----
+Son registros que como tal no existen en los dispositivos, al requerir de varios otros registros para calcular su valor
+- Registers: Identificadores de los registros que se usaran para calcular el valor del registro/overload
+             Han de ser exactamente iguales a los identificadores de los registros ( Register.Id )
+- Custom   : Similar al campo de los registros, pero solo admite dos modos, pudiendo indicar directamente la
+             operacion matematica a realizar o la cadena 'method' para que se invoque el metodo id_Logic, y
+			 también se puede indicar 'method:id_metodo' para invocar un mñetodo concreto
+
+			 En la operación se indicaran los indices de los registros en base uno ( 1,2,3... ), en el mismo
+			 orden en que se hayan definido, de arriba-abajo, en el XML, encerrados entre guiones bajos ( _n_ )
+			 <Registers>
+			   <Register>_id_register_param_1_</Register>
+			   <Register>_id_register_param_2_</Register>
+			 </Registers>
+			 <Custom>_1_ * _2_</Custom>
+
+			 Cabecera 1 del metodo:
+			 public T Overload_Method_Logic ( MemoryOverload<T> MemoryOverload, dynamic MemoryRegisters )
+			 En vez de T se tendra que indicar el tipo de valor del registro/overload ( <Type> )
+			 Se accede a los registros pasados como parametro con el operador punto ( MemoryRegisters.id_registro )
+			 Son instancias MemoryRegister, que no enlaces directos a la propiedad Value, para permitir poder acceder/leer
+			 los diferentes campos de cada registro, habiendo de usar la propiedad Value para recuperar el valor del registro
+
+			 pej. Overload ficticio que referencia registros de diferente tipo
+
+			 // family_31xx32xx.xml
+			 <Overload>
+			   <Id>Overload_Method</Id>
+			   <Type>int</Type>
+			   <Description>Overload field test description</Description>
+			   <Registers>
+			     <Register>MtuType</Register>
+				 <Register>Shipbit</Register>
+				 <Register>DailyRead</Register>
+			   </Registers>
+			   <Custom>method</Custom>
+			 </Overload>
+
+			 // MemoryMap31xx32xx.cs
+			 public int Overload_Method_Logic ( MemoryOverload<int> MemoryOverload, dynamic MemoryRegisters )
+			 {
+				 Console.WriteLine ( MemoryRegisters.Shipbit  .id + " -> " + MemoryRegisters.Shipbit  .Value );
+				 Console.WriteLine ( MemoryRegisters.MtuType  .id + " -> " + MemoryRegisters.MtuType  .Value );
+				 Console.WriteLine ( MemoryRegisters.DailyRead.id + " -> " + MemoryRegisters.DailyRead.Value );
+
+				 if ( MemoryRegisters.Shipbit.Value )
+					 return MemoryRegisters.MtuType.Value + MemoryRegisters.DailyRead.Value;
+			
+				 return -1;
+			 }
+
+			 Cabecera 2 del metodo:
+			 public T Method_reuse ( MemoryOverload<T> MemoryOverload, dynamic[] MemoryRegisters )
+			 La diferencia entre esta versión y la anterior se encuentra en el segundo parámetro
+			 En la opción anterior se pasa un objeto dinámico con los nuevos miembros registrados, teniendo
+			 que acceder usando el operador punto ( MemoryRegisters.idRegistro ), mientras que en este caso
+			 se pasa un array para poder acceder por indice sin necesidad de conocer los identificadores de
+			 los registros indicados en el XML. Estos métodos se pueden reutilizar entre diferentes overloads
+
+			 public int Method_reuse ( MemoryOverload<int> MemoryOverload, dynamic[] MemoryRegisters )
+			 {
+			   Console.WriteLine ( MemoryRegisters[ 0 ].id + " -> " + MemoryRegisters[ 0 ].Value );
+			   Console.WriteLine ( MemoryRegisters[ 1 ].id + " -> " + MemoryRegisters[ 1 ].Value );
+			   Console.WriteLine ( MemoryRegisters[ 2 ].id + " -> " + MemoryRegisters[ 2 ].Value );
+
+			   if ( MemoryRegisters[ 1 ].Value )
+			     return MemoryRegisters[ 0 ].Value + MemoryRegisters[ 2 ].Value;
+
+			   return -1;
+			 }

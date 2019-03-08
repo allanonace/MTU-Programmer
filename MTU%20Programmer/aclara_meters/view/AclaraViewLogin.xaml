@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             NavigationPage.HasBackButton="false" BackgroundColor="White"
+             xmlns:Controls="clr-namespace:aclara_meters"  
+             x:Class="aclara_meters.view.AclaraViewLogin">
+    <ContentPage.Content>
+        
+
+   <StackLayout x:Name="loginpage"  Scale="0.85" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+    <Image  Margin="0,0,0,0" HeightRequest="300" Source="aclara_logo_login.png" WidthRequest="300"  />
+  
+
+          <Frame CornerRadius="6" HeightRequest="40" Margin="0,0,0,0" WidthRequest="480" BackgroundColor="Gray"  >
+              <Frame CornerRadius="6"  HeightRequest="40"  Margin="-7" BackgroundColor="White"  >
+                        <StackLayout Margin="1"  BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                             <Image Margin="4,4,0,0" Source="aclara_user_black.png"
+                                                     WidthRequest="34"
+                                                     HeightRequest="34"
+                                                     Scale="1"
+                                                     VerticalOptions="Center" />
+                             <Controls:BorderlessEntry   Margin="8,0,0,0" BackgroundColor="White"  HeightRequest="45"  Text="{Binding User.Email, Mode=TwoWay}" 
+                         x:Name="EmailEntry" TextColor="Gray" Placeholder="Email" PlaceholderColor="Gray" 
+                         Keyboard="Email" HorizontalOptions="FillAndExpand" FontSize="18"  HorizontalTextAlignment="Start"/>
+
+                        </StackLayout>
+                 </Frame> 
+            
+        </Frame>
+        
+         <Frame CornerRadius="6" HeightRequest="40" Margin="0,16,0,0" BackgroundColor="Gray"  >
+              <Frame CornerRadius="6"  HeightRequest="40"  Margin="-7" BackgroundColor="White"  >
+                        <StackLayout Margin="1"  BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                             <Image Margin="4,4,0,0" Source="aclara_key_black.png"
+                                                     WidthRequest="34"
+                                                     HeightRequest="34"
+                                                     Scale="1"
+                                                     VerticalOptions="Center" />
+                             <Controls:BorderlessEntry Margin="8,0,0,0" Text="{Binding User.Password, Mode=TwoWay}" 
+                                    HeightRequest="45"   x:Name="PasswordEntry" TextColor="Gray" HorizontalOptions="FillAndExpand"
+                                    Placeholder="Password" PlaceholderColor="Gray" IsPassword="True" 
+                                    FontSize="18" HorizontalTextAlignment="Start"/>
+                        </StackLayout>
+                 </Frame> 
+            
+            </Frame>
+
+            
+                 <Button BorderRadius="6" BorderColor="Gray" BorderWidth="0" HeightRequest="54" Margin="0,20,0,0" 
+                         Text="Login" BackgroundColor="#6aa2b8"  TextColor="White" FontSize="26" Command="{Binding LoginCommand}"/>
+            <Label Text="{Binding Message, Mode=OneWay}" TextColor="#0072BD"/>
+
+
+               <Label x:Name="accuracy" IsVisible="false" Text="Waiting Accuracy..." FontSize="12" TextColor="#0072BD"/>
+            
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

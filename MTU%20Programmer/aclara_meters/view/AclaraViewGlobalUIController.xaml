@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<util:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:util="clr-namespace:aclara_meters.util;assembly=aclara_meters"
+               NavigationPage.HasBackButton="false"
+               BackgroundColor="Black"
+               xmlns:Controls="clr-namespace:aclara_meters"  
+               x:Class="aclara_meters.view.AclaraViewGlobalUIController">
+
+    <RelativeLayout IsVisible="true">
+        <ContentView BackgroundColor="White" WidthRequest="1024" x:Name="fondo" IsVisible="true"
+            RelativeLayout.YConstraint=
+              "{ConstraintExpression Type=RelativeToParent,
+                                     Property=Height,
+                                     Factor=0}"
+            RelativeLayout.HeightConstraint=
+              "{ConstraintExpression Type=RelativeToParent,
+                                     Property=Height,
+                                     Factor=1}">
+        </ContentView>
+    </RelativeLayout>
+</util:BasePage> 

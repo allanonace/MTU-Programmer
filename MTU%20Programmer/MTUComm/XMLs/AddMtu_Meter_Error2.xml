@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MtuScript>
+	<userName>singh</userName>	
+    <logFile>AddResult_Error2.xml</logFile>
+    <action type="AddMtu">
+        <ReadInterval>4 hrs</ReadInterval>
+        <MeterType Port="1">3101</MeterType>
+        <MeterReading Port="1">223344</MeterReading>
+	</action>
+</MtuScript>

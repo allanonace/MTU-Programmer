@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<DemandConf>
+	<Demand MTUType="74" Name="One Hour Demand">
+		<BlockTime>60</BlockTime>
+		<IntervalTime>60</IntervalTime>
+		<AutoClear>1</AutoClear>
+	</Demand>
+	<Demand MTUType="74" Name="Default Demand">
+		<BlockTime>15</BlockTime>
+		<IntervalTime>15</IntervalTime>
+		<AutoClear>1</AutoClear>
+	</Demand>
+	<Demand MTUType="74" Name="No Demand">
+		<BlockTime>0</BlockTime>
+		<IntervalTime>0</IntervalTime>
+		<AutoClear>0</AutoClear>
+	</Demand>
+	<Demand MTUType="75" Name="Commercial Demand">
+		<BlockTime>30</BlockTime>
+		<IntervalTime>15</IntervalTime>
+		<AutoClear>1</AutoClear>
+	</Demand>
+</DemandConf>

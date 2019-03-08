@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DynamicHelp xmlns="http://msdn.microsoft.com/vsdata/xsd/vsdh.xsd" xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xsi:schemaLocation="http://msdn.microsoft.com/vsdata/xsd/vsdh.xsd">	
+   <LINKGROUP ID="Lexi" Title="Lexi Reference Help" Priority="2100">
+      <GLYPH Expanded="vs:/ctxhelp_show.gif" Collapsed="vs:/ctxhelp_hide.gif"/>
+   </LINKGROUP>
+
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.BytesToRead" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000007.html" LinkGroup="Lexi">BytesToRead Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.Close" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000004.html" LinkGroup="Lexi">Close Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Exceptions.LexiWriteException.ErrorCode" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000015.html" LinkGroup="Lexi">ErrorCode Property</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000001.html" LinkGroup="Lexi">ISerial Interface</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.IsOpen" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000005.html" LinkGroup="Lexi">IsOpen Method</LItem>
+      </Links>
+   </Context>
+   
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Lexi" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_000000000000000C_overloads--.html" LinkGroup="Lexi">Lexi Constructor</LItem>
+      </Links>
+   </Context>
+   
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Lexi" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_000000000000000B_overloads--.html" LinkGroup="Lexi">Lexi Constructor</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_000000000000000A.html" LinkGroup="Lexi">Lexi Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000009.html" LinkGroup="Lexi">Lexi Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi Reference" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000016.html" LinkGroup="Lexi">Lexi Reference</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Exceptions" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000012.html" LinkGroup="Lexi">Lexi.Exceptions Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000000.html" LinkGroup="Lexi">Lexi.Interfaces Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Exceptions.LexiWriteException" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000013.html" LinkGroup="Lexi">LexiWriteException Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Exceptions.LexiWriteException.LexiWriteException" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000014.html" LinkGroup="Lexi">LexiWriteException Constructor</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.Open" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000006.html" LinkGroup="Lexi">Open Method</LItem>
+      </Links>
+   </Context>
+   
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Read" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_000000000000000E_overloads--.html" LinkGroup="Lexi">Read Method</LItem>
+      </Links>
+   </Context>
+   
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Read" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_000000000000000D_overloads--.html" LinkGroup="Lexi">Read Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.Read" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000002.html" LinkGroup="Lexi">Read Method {Lexi.Interfaces.ISerial}</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Timout" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000011.html" LinkGroup="Lexi">Timout Property</LItem>
+      </Links>
+   </Context>
+   
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Write" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_000000000000000F_overloads--.html" LinkGroup="Lexi">Write Method</LItem>
+      </Links>
+   </Context>
+   
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Lexi.Write" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000010_overloads--.html" LinkGroup="Lexi">Write Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.Write" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000003.html" LinkGroup="Lexi">Write Method {Lexi.Interfaces.ISerial}</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="Lexi.Interfaces.ISerial.isEcho" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:Lexi.chm::/topic_0000000000000008.html" LinkGroup="Lexi">isEcho Method</LItem>
+      </Links>
+   </Context>
+   
+
+</DynamicHelp>
+

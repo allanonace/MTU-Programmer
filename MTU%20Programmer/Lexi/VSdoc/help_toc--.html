@@ -1,0 +1,511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>Menu</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+<style>
+html { font-family:sans-serif; background-color:#ffffff; font-size:75%;}
+a { text-decoration:none; color:rgb(0,51,102) }
+.header a { color:#000!important }
+a:focus {background-color: #CCCCCC;}
+.item { border:solid 0px #000; padding:0.25em; margin-left:1em }
+.header, .leaf { cursor:pointer; padding-left:19px; min-height:18px; line-height:18px; white-space:nowrap;}
+.closed { background:url(bookC.gif) no-repeat }
+.open { background:url(bookE.gif) no-repeat }
+.leaf { background:url(leaf.gif) no-repeat }
+</style>
+
+<script>
+function toggle(idsub,elhead) {
+    var elsub = document.getElementById(idsub);
+    if(elsub.style.display=="block")
+        elsub.style.display = "none";
+    else
+        elsub.style.display="block";
+        
+    if(elhead.className=="header open")
+        elhead.className = "header closed";
+    else
+        elhead.className = "header open";
+}
+
+function expandLinkInToc(url) {
+	var link = findLink(url);
+	//alert(link);
+	//alert(link.innerHTML);
+	if(!isElementVisible(link)) {
+		expandElementAndParents(link);
+	}
+	link.scrollIntoView(true);
+	link.focus();
+}
+
+function expandElementAndParents(elm) {
+	if(elm.style) {
+		if(elm.style.display=="none") {
+			//elm is container with subtopics
+			elm.style.display="block";
+			// process also chapter header
+			var id = elm.getAttribute("id");
+			id = id.substring(1);
+			var elHead = document.getElementById(id);
+			if(elHead.className=="header closed") {
+				elHead.className = "header open";
+			}
+		}
+	}
+	// process parents
+	if (elm.parentNode) {
+		expandElementAndParents(elm.parentNode);
+	}
+}
+
+function findLink(url) {
+	var links = document.links;
+	var i;
+	for (i=0; i<links.length; i++) {
+		if (links[i].href == url) {
+			return links[i];
+		}		
+	}
+	return null;
+} 
+
+function isElementVisible(elm) {
+	if(elm.style) {
+		if(elm.style.display == "none") {
+			return false;
+		}
+	}
+	if (elm.parentNode) {
+		return isElementVisible(elm.parentNode);
+	} else {
+		return true;
+	}
+}
+</script>
+
+</head>
+
+<body>
+    
+						 		<div id="1" class="header closed" onclick="toggle('c1',this)">
+   
+  		<a href="topic_0000000000000016.html" target="vbdocright">Lexi Reference</a>
+ 
+		</div>
+     <div id="c1" class="item" style="display:none">
+		
+     
+
+       <div id="2" class="header closed" onclick="toggle('c2',this)">
+    <a href="topic_0000000000000009.html" target="vbdocright">Lexi Namespace</a>
+    </div>
+    <div id="c2" class="item" style="display:none">
+		
+
+						    <div id="3" class="header closed" onclick="toggle('c3',this)">
+    <a href="topic_000000000000000A.html" target="vbdocright">Lexi Class</a>
+    </div>
+    <div id="c3" class="item" style="display:none">
+		
+
+		
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+						      <div id="4" class="header closed" onclick="toggle('c4',this)">
+    <a href="topic_000000000000000B_overloads--.html" target="vbdocright">Lexi Constructor</a>
+    </div>
+    <div id="c4" class="item" style="display:none">
+	
+
+			
+		<div class="leaf"><a href="topic_000000000000000C.html" target="vbdocright">Lexi() Constructor</a></div>
+		              
+			
+		<div class="leaf"><a href="topic_000000000000000B.html" target="vbdocright">Lexi(ISerial, int) Constructor</a></div>
+		              
+	
+	</div>         
+  
+
+		
+		
+
+
+		    <div id="5" class="header closed" onclick="toggle('c5',this)">
+    <a href="topic_000000000000000A_props--.html" target="vbdocright">Properties</a>
+    </div>
+    <div id="c5" class="item" style="display:none">
+		
+						  
+    <div class="leaf"><a href="topic_0000000000000011.html" target="vbdocright">Timout Property</a></div>
+  
+
+			</div>
+		
+
+
+		    <div id="6" class="header closed" onclick="toggle('c6',this)">
+    <a href="topic_000000000000000A_methods--.html" target="vbdocright">Methods</a>
+    </div>
+    <div id="c6" class="item" style="display:none">
+		
+						      <div id="7" class="header closed" onclick="toggle('c7',this)">
+    <a href="topic_000000000000000D_overloads--.html" target="vbdocright">Read Method</a>
+    </div>
+    <div id="c7" class="item" style="display:none">
+	
+
+			
+		<div class="leaf"><a href="topic_000000000000000E.html" target="vbdocright">Read(ISerial, UInt32, UInt32, int) Method</a></div>
+		              
+			
+		<div class="leaf"><a href="topic_000000000000000D.html" target="vbdocright">Read(UInt32, UInt32) Method</a></div>
+		              
+	
+	</div>         
+  
+
+						      <div id="8" class="header closed" onclick="toggle('c8',this)">
+    <a href="topic_000000000000000F_overloads--.html" target="vbdocright">Write Method</a>
+    </div>
+    <div id="c8" class="item" style="display:none">
+	
+
+			
+		<div class="leaf"><a href="topic_0000000000000010.html" target="vbdocright">Write(ISerial, UInt32, byte[], int) Method</a></div>
+		              
+			
+		<div class="leaf"><a href="topic_000000000000000F.html" target="vbdocright">Write(byte, byte[]) Method</a></div>
+		              
+	
+	</div>         
+  
+
+			</div>
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+</div>
+
+
+		
+		
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+</div>
+
+
+       <div id="9" class="header closed" onclick="toggle('c9',this)">
+    <a href="topic_0000000000000012.html" target="vbdocright">Lexi.Exceptions Namespace</a>
+    </div>
+    <div id="c9" class="item" style="display:none">
+		
+
+						    <div id="10" class="header closed" onclick="toggle('c10',this)">
+    <a href="topic_0000000000000013.html" target="vbdocright">LexiWriteException Class</a>
+    </div>
+    <div id="c10" class="item" style="display:none">
+		
+
+		
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+						  
+    <div class="leaf"><a href="topic_0000000000000014.html" target="vbdocright">LexiWriteException Constructor</a></div>
+  
+
+		
+		
+
+
+		    <div id="11" class="header closed" onclick="toggle('c11',this)">
+    <a href="topic_0000000000000013_props--.html" target="vbdocright">Properties</a>
+    </div>
+    <div id="c11" class="item" style="display:none">
+		
+						  
+    <div class="leaf"><a href="topic_0000000000000015.html" target="vbdocright">ErrorCode Property</a></div>
+  
+
+			</div>
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+</div>
+
+
+		
+		
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+</div>
+
+
+       <div id="12" class="header closed" onclick="toggle('c12',this)">
+    <a href="topic_0000000000000000.html" target="vbdocright">Lexi.Interfaces Namespace</a>
+    </div>
+    <div id="c12" class="item" style="display:none">
+		
+
+		
+
+		
+
+
+						    <div id="13" class="header closed" onclick="toggle('c13',this)">
+    <a href="topic_0000000000000001.html" target="vbdocright">ISerial Interface</a>
+    </div>
+    <div id="c13" class="item" style="display:none">
+		
+
+		
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		    <div id="14" class="header closed" onclick="toggle('c14',this)">
+    <a href="topic_0000000000000001_methods--.html" target="vbdocright">Methods</a>
+    </div>
+    <div id="c14" class="item" style="display:none">
+		
+						  
+    <div class="leaf"><a href="topic_0000000000000007.html" target="vbdocright">BytesToRead Method</a></div>
+  
+
+						  
+    <div class="leaf"><a href="topic_0000000000000004.html" target="vbdocright">Close Method</a></div>
+  
+
+						  
+    <div class="leaf"><a href="topic_0000000000000005.html" target="vbdocright">IsOpen Method</a></div>
+  
+
+						  
+    <div class="leaf"><a href="topic_0000000000000006.html" target="vbdocright">Open Method</a></div>
+  
+
+						  
+    <div class="leaf"><a href="topic_0000000000000002.html" target="vbdocright">Read Method</a></div>
+  
+
+						  
+    <div class="leaf"><a href="topic_0000000000000003.html" target="vbdocright">Write Method</a></div>
+  
+
+						  
+    <div class="leaf"><a href="topic_0000000000000008.html" target="vbdocright">isEcho Method</a></div>
+  
+
+			</div>
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+</div>
+
+
+		
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+		
+
+
+</div>
+
+
+ 
+
+  
+		</div>
+ 
+
+
+
+		
+		
+</body>
+</html>

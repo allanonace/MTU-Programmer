@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aclara_meters.iOS", "aclara_meters.iOS.csproj", "{6647D796-74D3-48BC-8011-1E783F835121}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		AppStore|iPhone = AppStore|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6647D796-74D3-48BC-8011-1E783F835121}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{6647D796-74D3-48BC-8011-1E783F835121}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{6647D796-74D3-48BC-8011-1E783F835121}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{6647D796-74D3-48BC-8011-1E783F835121}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{6647D796-74D3-48BC-8011-1E783F835121}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.Debug|iPhone.Build.0 = Debug|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.Release|iPhone.ActiveCfg = Release|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.Release|iPhone.Build.0 = Release|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{6647D796-74D3-48BC-8011-1E783F835121}.AppStore|iPhone.Build.0 = AppStore|iPhone
+	EndGlobalSection
+EndGlobal

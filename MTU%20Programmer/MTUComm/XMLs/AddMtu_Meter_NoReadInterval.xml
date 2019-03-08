@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MtuScript>
+	<userName>3000</userName>
+    <logFile>AddResult_NoReadInterval.xml</logFile>
+    <action type="AddMtu">
+        <!--<ReadInterval>4 hrs</ReadInterval>-->
+        <AccountNumber Port="1">123456789</AccountNumber> <!-- NO SE USA -->
+        <MeterReading Port="1">888888</MeterReading>
+        <ActivityLogId>56657867</ActivityLogId>
+        <MeterType Port="1">3102</MeterType>
+	</action>
+</MtuScript>

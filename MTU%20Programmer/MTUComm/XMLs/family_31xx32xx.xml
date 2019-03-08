@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Registers>
+  <Overload>
+    <Id>MtuStatus</Id>
+    <Description>Mtu Status</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>Shipbit</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>DailySnap</Id>
+    <Description>Mtu Daily Snap</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>DailyGMTHourRead</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>ReadInterval</Id>
+    <Description>Read Interval</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>ReadIntervalMinutes</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>XmitInterval</Id>
+    <Description>Transmit Interval</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>MessageOverlapCount</Register>
+      <Register>ReadIntervalMinutes</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>PCBNumber</Id>
+    <Description>PCBNumber</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>PCBSupplierCode</Register>
+      <Register>PCBCoreNumber</Register>
+      <Register>PCBProductRevision</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>InstallConfirmationStatus</Id>
+    <Description>Installation Confirmation Status</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>InstallConfirmationNotSynced</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>Encryption</Id>
+    <Description>Encryption</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>Encrypted</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>InterfaceTamperStatus</Id>
+    <Description>Interface TamperS tatus</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P1InterfaceAlarm</Register>
+      <Register>ProgrammingCoilInterfaceTamper</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>TiltTamperStatus</Id>
+    <Description>Tilt Tamper Status</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P1TiltAlarm</Register>
+      <Register>TiltTamper</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>MagneticTamperStatus</Id>
+    <Description>Magnetic Tamper Status</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P1MagneticAlarm</Register>
+      <Register>MagneticTamper</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>RegisterCoverTamperStatus</Id>
+    <Description>Register Cover Tamper Status</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P1RegisterCoverAlarm</Register>
+      <Register>RegisterCoverTamper</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>ReverseFlowTamperStatus</Id>
+    <Description>Reverse Flow TamperStatus</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P1ReverseFlowAlarm</Register>
+      <Register>ReverseFlowTamper</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>MtuVoltageBattery</Id>
+    <Description>Mtu Voltage Battery</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>MtuMiliVoltageBattery</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>F12WAYRegister1</Id>
+    <Description>7021 reg1</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>F12WAYRegister1Int</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>F12WAYRegister10</Id>
+    <Description>7021 reg10</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>F12WAYRegister10Int</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>F12WAYRegister14</Id>
+    <Description>7021 reg14</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>F12WAYRegister14Int</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>Frequency1Way</Id>
+    <Description>1 Way channel Frequency</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>Frequency1WayHz</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>Frequency2WayTx</Id>
+    <Description>1 Way channel Transimision Frequency</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>Frequency2WayTxHz</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>Frequency2WayRx</Id>
+    <Description>1 Way channel Reception Frequency</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>Frequency2WayRxHz</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>P1ReadingError</Id>
+    <Description>P1 Reading Error Message</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P1ReadingErrorCode</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>P2ReadingError</Id>
+    <Description>P1 Reading Error Message</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>P2ReadingErrorCode</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>P1Status</Id>
+    <Description>Status of Port 1</Description>
+	  <Type>string</Type>
+    <Registers>
+      <Register>P1StatusFlag</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>P2Status</Id>
+    <Description>Status of Port 2</Description>
+	  <Type>string</Type>
+    <Registers>
+      <Register>P2StatusFlag</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>MtuSoftVersion</Id>
+    <Description>Mtu software/firmware version</Description>
+    <Type>int</Type>
+    <Registers>
+      <Register>MtuSoftVersionLegacy</Register>
+      <Register>MtuSoftVersionNew</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Overload>
+    <Id>MtuSoftVersionString</Id>
+    <Description>Mtu software version</Description>
+    <Type>string</Type>
+    <Registers>
+      <Register>MtuSoftRevYear</Register>
+      <Register>MtuSoftRevMonth</Register>
+      <Register>MtuSoftBuildNumber</Register>
+    </Registers>
+    <CustomGet>method</CustomGet>
+  </Overload>
+  <Register>
+    <Id>MtuType</Id>
+    <Description>MTU Type</Description>
+    <Type>int</Type>
+    <Address>0</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSoftVersionLegacy</Id>
+    <Description>MTU software version for legacy handheld tools</Description>
+    <Type>int</Type>
+    <Address>1</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSoftVersionNew</Id>
+    <Description>MTU software version</Description>
+    <Type>int</Type>
+    <Address>244</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSoftBuildNumber</Id>
+    <Description>MTU software build number</Description>
+    <Type>int</Type>
+    <Address>240</Address>
+    <Size>2</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSoftRevYear</Id>
+    <Description>MTU software revision year</Description>
+    <Type>int</Type>
+    <Address>245</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSoftRevMonth</Id>
+    <Description>MTU software revision month</Description>
+    <Type>int</Type>
+    <Address>246</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSoftRevDay</Id>
+    <Description>MTU software revision day</Description>
+    <Type>int</Type>
+    <Address>247</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuSerialNumber</Id>
+    <Description>MTU Id</Description>
+    <Type>int</Type>
+    <Address>6</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>Frequency1WayHz</Id>
+    <Description>MTU Id</Description>
+    <Type>int</Type>
+    <Address>10</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>Frequency2WayTxHz</Id>
+    <Description>MTU Id</Description>
+    <Type>int</Type>
+    <Address>14</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>Frequency2WayRxHz</Id>
+    <Description>MTU Id</Description>
+    <Type>int</Type>
+    <Address>18</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>Shipbit</Id>
+    <Description>System flags - Shipbit</Description>
+    <Type>bool</Type>
+    <Address>22</Address>
+    <Size>0</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>DailyGMTHourRead</Id>
+    <Description>Daily read</Description>
+    <Type>int</Type>
+    <Address>198</Address>
+    <Size>1</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MessageOverlapCount</Id>
+    <Description>Message overlap count</Description>
+    <Type>int</Type>
+    <Address>25</Address>
+    <Size>1</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2MessageOverlapCount</Id>
+    <Description>Message overlap count port 2</Description>
+    <Type>int</Type>
+    <Address>61</Address>
+    <Size>1</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>ReadIntervalMinutes</Id>
+    <Description>Read interval</Description>
+    <Type>int</Type>
+    <Address>26</Address>
+    <Size>2</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet>method</CustomSet>
+  </Register>
+  <Register>
+    <Id>DcuId</Id>
+    <Description>Dcu Id</Description>
+    <Type>int</Type>
+    <Address>92</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>RSSI</Id>
+    <Description>Dcu Packet RSSI</Description>
+    <Type>int</Type>
+    <Address>120</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet>(_val_ / 2) - 130</CustomGet>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MtuMiliVoltageBattery</Id>
+    <Description>battery voltage (AD value) | battery volt = ADvalue * 9.766mV*2 + 250</Description>
+    <Type>int</Type>
+    <Address>113</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet>(_val_ * 9.766 * 2) + 250</CustomGet>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1TiltAlarm</Id>
+    <Description> P1 mode - Tilt alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>0</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1MagneticAlarm</Id>
+    <Description>P1 mode - magnetic alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>1</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1ImmediateAlarm</Id>
+    <Description>P1 mode - immediate alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>2</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1UrgentAlarm</Id>
+    <Description>P1 mode - urgent alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>3</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1InterfaceAlarm</Id>
+    <Description>P1 mode - Interface alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>4</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1RegisterCoverAlarm</Id>
+    <Description>P1 mode - Register cover alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>5</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1ReverseFlowAlarm</Id>
+    <Description>P1 mode - Reverse flow alarm</Description>
+    <Type>bool</Type>
+    <Address>42</Address>
+    <Size>6</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1CutWireAlarm</Id>
+    <Description>P1 mode2 - Cut wire alarm</Description>
+    <Type>bool</Type>
+    <Address>45</Address>
+    <Size>0</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2TiltAlarm</Id>
+    <Description> P2 mode - Tilt alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>0</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2MagneticAlarm</Id>
+    <Description>P2 mode - magnetic alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>1</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2ImmediateAlarm</Id>
+    <Description>P2 mode - immediate alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>2</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2UrgentAlarm</Id>
+    <Description>P2 mode - urgent alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>3</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2InterfaceAlarm</Id>
+    <Description>P2 mode - Interface alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>4</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2RegisterCoverAlarm</Id>
+    <Description>P2 mode - Register cover alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>5</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2ReverseFlowAlarm</Id>
+    <Description>P2 mode - Reverse flow alarm</Description>
+    <Type>bool</Type>
+    <Address>58</Address>
+    <Size>6</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1StatusFlag</Id>
+    <Description>Raw P1 Status</Description>
+    <Type>bool</Type>
+    <Address>28</Address>
+    <Size>0</Size>
+    <Write>false</Write>
+    <CustomGet/>
+	  <CustomSet/>
+  </Register>  
+  <Register>
+    <Id>P2StatusFlag</Id>
+    <Description>Raw P2 Status</Description>
+    <Type>bool</Type>
+    <Address>28</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+	  <CustomSet/>
+  </Register>  
+  <Register>
+    <Id>P1MeterType</Id>
+    <Description>P1 meter Type</Description>
+    <Type>int</Type>
+    <Address>32</Address>
+    <Size>2</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2MeterType</Id>
+    <Description>P2 meter Type</Description>
+    <Type>int</Type>
+    <Address>48</Address>
+    <Size>2</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1MeterId</Id>
+    <Description>P1 meter Id</Description>
+    <Type>ulong</Type>
+    <Address>34</Address>
+    <Size>6</Size>
+    <Write>true</Write>
+    <CustomGet>method:BcdToULong</CustomGet>
+    <CustomSet>method:ULongToBcd</CustomSet>
+  </Register>
+  <Register>
+    <Id>P2MeterId</Id>
+    <Description>P2 meter Id</Description>
+    <Type>ulong</Type>
+    <Address>50</Address>
+    <Size>6</Size>
+    <Write>true</Write>
+    <CustomGet>method:BcdToULong</CustomGet>
+    <CustomSet>method:ULongToBcd</CustomSet>
+  </Register>
+  <Register>
+    <Id>P1ReadingErrorCode</Id>
+    <Description>P1 Reading Error Code</Description>
+    <Type>int</Type>
+    <Address>72</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2ReadingErrorCode</Id>
+    <Description>P2 Reading Error Code</Description>
+    <Type>int</Type>
+    <Address>112</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1Scaler</Id>
+    <Description>P1 scaler</Description>
+    <Type>int</Type>
+    <Address>102</Address>
+    <Size>2</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2Scaler</Id>
+    <Description>P2 scaler</Description>
+    <Type>int</Type>
+    <Address>110</Address>
+    <Size>2</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>TiltTamper</Id>
+    <Description>Tamper memory - Tilt tamper</Description>
+    <Type>bool</Type>
+    <Address>71</Address>
+    <Size>0</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>MagneticTamper</Id>
+    <Description>Tamper memory - Magnetic tamper</Description>
+    <Type>bool</Type>
+    <Address>71</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>ProgrammingCoilInterfaceTamper</Id>
+    <Description>Tamper memory - Programming coil interface tamper</Description>
+    <Type>bool</Type>
+    <Address>71</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>RegisterCoverTamper</Id>
+    <Description>Tamper memory - Register cover tamper</Description>
+    <Type>bool</Type>
+    <Address>71</Address>
+    <Size>5</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>ReverseFlowTamper</Id>
+    <Description>Tamper memory - Reverse flow tamper</Description>
+    <Type>bool</Type>
+    <Address>71</Address>
+    <Size>6</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>F12WAYRegister1Int</Id>
+    <Description>7021 reg1 Integer</Description>
+    <Type>int</Type>
+    <Address>132</Address>
+    <Size>4</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet>method:HexToInt</CustomSet>
+  </Register>
+  <Register>
+    <Id>F12WAYRegister10Int</Id>
+    <Description>7021 reg10 Integer</Description>
+    <Type>int</Type>
+    <Address>168</Address>
+    <Size>4</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet>method:HexToInt</CustomSet>
+  </Register>
+  <Register>
+    <Id>F12WAYRegister14Int</Id>
+    <Description>7021 reg14 Integer</Description>
+    <Type>int</Type>
+    <Address>184</Address>
+    <Size>4</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet>method:HexToInt</CustomSet>
+  </Register>
+  <Register>
+    <Id>RxInterval</Id>
+    <Description>Number of TX between RX</Description>
+    <Type>int</Type>
+    <Address>202</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P1Reading</Id>
+    <Description>P1Reading</Description>
+    <Type>ulong</Type>
+    <Address>96</Address>
+    <Size>6</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>P2Reading</Id>
+    <Description>P2Reading</Description>
+    <Type>ulong</Type>
+    <Address>104</Address>
+    <Size>6</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>InstallConfirmationNotSynced</Id>
+    <Description>Installation Confirmation not synced with DCU flag</Description>
+    <Type>bool</Type>
+    <Address>116</Address>
+    <Size>1</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>InstallConfirmationRequest</Id>
+    <Description>Set this flag to request a time sync</Description>
+    <Type>bool</Type>
+    <Address>65</Address>
+    <Size>2</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>EncryptionKey</Id>
+    <Description>EncryptionKey</Description>
+    <Type>string</Type>
+    <Address>256</Address>
+    <Size>16</Size>
+    <Write>true</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>Encrypted</Id>
+    <Description>Encryption enabled</Description>
+    <Type>bool</Type>
+    <Address>318</Address>
+    <Size>0</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>EncryptionIndex</Id>
+    <Description>EncryptionIndex</Description>
+    <Type>int</Type>
+    <Address>319</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>PCBSupplierCode</Id>
+    <Description>PCB Number Supplier Code</Description>
+    <Type>int</Type>
+    <Address>232</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>PCBCoreNumber</Id>
+    <Description>PCB Core Number</Description>
+    <Type>int</Type>
+    <Address>233</Address>
+    <Size>4</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+  <Register>
+    <Id>PCBProductRevision</Id>
+    <Description>PCB Product Revision Number</Description>
+    <Type>int</Type>
+    <Address>237</Address>
+    <Size>1</Size>
+    <Write>false</Write>
+    <CustomGet/>
+    <CustomSet/>
+  </Register>
+</Registers>

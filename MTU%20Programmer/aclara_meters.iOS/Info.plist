@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>aclara-mtu-programmer</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.aclara.mtu.programmer</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<array>
+				<string>aclara-mtu-programmer</string>
+			</array>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>appcenter-cb622ad5-e2ad-469d-b1cd-7461f140b2dc</string>
+				<string>appcenter-cb622ad5-e2ad-469d-b1cd-7461f140b2dc-intunemam</string>
+				<string>aclara-mtu-programmer</string>
+				<string>aclara-mtu-programmer-intunemam</string>
+			</array>
+		</dict>
+	</array>
+	<key>IntuneMAMSettings</key>
+	<dict>
+		<key>MainStoryboardFile</key>
+		<string>LaunchScreen</string>
+	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https-intunemam</string>
+		<string>http-intunemam</string>
+		<string>microsoft-edge-https-intunemam</string>
+		<string>microsoft-edge-http-intunemam</string>
+		<string>ms-outlook-intunemam</string>
+	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>MinimumOSVersion</key>
+	<string>8.0</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>aclara-mtu-programmer use your calendar.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>aclara-mtu-programmer bluetooth use.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open and in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Light.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>bluetooth-central</string>
+		<string>fetch</string>
+	</array>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>CFBundleName</key>
+	<string>aclara-mtu-programmer</string>
+	<key>CFBundleVersion</key>
+	<string>0.0.5</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.36.3</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImage-4.launchimage</string>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
+</dict>
+</plist>

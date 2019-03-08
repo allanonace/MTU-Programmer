@@ -1,0 +1,912 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MtuTypes>
+	<FileVersion>2.0</FileVersion>
+	<FileDate>10/11/2005</FileDate>
+	<Mtu ID="1">
+		<HexNum>501-6082A</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="2">
+		<HexNum>501-6082R</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="3">
+		<HexNum>501-6082D</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="4">
+		<HexNum>501-6082E</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="5">
+		<HexNum>501-6082F</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Universal</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="6">
+		<HexNum>501-6082AA</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="7">
+		<HexNum>501-6082AR</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed Pulse</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="8">
+		<HexNum>501-6082AD</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="9">
+		<HexNum>501-6082RR</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed Pulse</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="10">
+		<HexNum>501-6082RD</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="11">
+		<HexNum>501-6082DD</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="12">
+		<HexNum>501-6082E1</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Wafer w/Mag Tamper</Description>
+			<Type>M</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="13">
+		<HexNum>501-891A</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="14">
+		<HexNum>501-891R</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="15">
+		<HexNum>501-891D</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="16">
+		<HexNum>501-891AA</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="17">
+		<HexNum>501-891AR</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed Pulse</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="18">
+		<HexNum>501-891AD</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="19">
+		<HexNum>501-891RR</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed Pulse</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="20">
+		<HexNum>501-891RD</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="21">
+		<HexNum>501-891DD</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="22">
+		<HexNum>501-6082AW</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Weigand Pulse</Description>
+			<Type>W</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="23">
+		<HexNum>501-6082RW</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Weigand Pulse</Description>
+			<Type>W</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="24">
+		<HexNum>501-5891AW</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Weigand Pulse</Description>
+			<Type>W</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="25">
+		<HexNum>501-5891RW</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Weigand Pulse</Description>
+			<Type>W</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="26">
+		<HexNum>501-6082E2</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Wafer w/Tilt Sw</Description>
+			<Type>M</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="27">
+		<HexNum>501-6082E3</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Wafer w/Both</Description>
+			<Type>M</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="28">
+		<HexNum>501-6082EA</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="29">
+		<HexNum>501-6082ER</HexNum>
+		<Model>D</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>False</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed Pulse</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="30">
+		<HexNum>501-6327R</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="31">
+		<HexNum>501-6327RR</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="32">
+		<HexNum>501-6327D</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="33">
+		<HexNum>501-6327DD</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="34">
+		<HexNum>501-6082EB</HexNum>
+		<Model>D2</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="35">
+		<HexNum>501-6082DB</HexNum>
+		<Model>D2</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="36">
+		<HexNum>501-6082RB</HexNum>
+		<Model>D2</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="37">
+		<HexNum>501-7330</HexNum>
+		<Model>F</Model>
+		<Port Number="1">
+			<Description>Electric</Description>
+			<Type>L</Type>
+			<Tamper>Int</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="38">
+		<HexNum>501-6380P</HexNum>
+		<Model>F</Model>
+		<Port Number="1">
+			<Description>Pulse Adapter</Description>
+			<Type>P</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="39">
+		<HexNum>501-7786AR</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="40">
+		<HexNum>501-7786RD</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="41">
+		<HexNum>501-6327E</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="42">
+		<HexNum>501-6327A</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="43">
+		<HexNum>501-7786P</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Pulse Adapter</Description>
+			<Type>P</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="44">
+		<HexNum>501-7786PP</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Pulse Adapter</Description>
+			<Type>P</Type>
+			<Tamper>False</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Pulse Adapter</Description>
+			<Type>P</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="45">
+		<HexNum>501-6327ER</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed Pulse</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="46">
+		<HexNum>501-6327PR</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Pulse Adapter</Description>
+			<Type>P</Type>
+			<Tamper>False</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Reed</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="47">
+		<HexNum>501-6327AA</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Gen Pulse</Description>
+			<Type>G</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="48">
+		<HexNum>501-6327PT</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Pulse Adapter</Description>
+			<Type>P</Type>
+			<Tamper>False</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Temp Adapter</Description>
+			<Type>T</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="49">
+		<HexNum>501-6717H</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Pit w/ER2 Sensor</Description>
+			<Type>W</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="50">
+		<HexNum>501-7712EB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="51">
+		<HexNum>501-7712RB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="52">
+		<HexNum>501-7712HB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="53">
+		<HexNum>501-7712H1B</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="54">
+		<HexNum>501-7712CB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Compumatic Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="55">
+		<HexNum>501-7712E</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="56">
+		<HexNum>501-8877</HexNum>
+		<Model>B</Model>
+		<RequiresAlarmProfile>true</RequiresAlarmProfile>
+		<Port Number="1">
+			<Description>Electric</Description>
+			<Type>I</Type>
+			<Tamper>Int</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="57">
+		<HexNum>501-7712KB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Rockwell-Compumatic</Description>
+			<Type>K</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="58">
+		<HexNum>501-7786T</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Temp Adapter</Description>
+			<Type>T</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="59">
+		<HexNum>501-6327HD</HexNum>
+		<Model>F</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="60">
+		<HexNum>501-6327H</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="61">
+		<HexNum>501-6327ED</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>False</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="62">
+		<HexNum>501-6327C</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Compumatic Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="63">
+		<HexNum>501-6327K</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Rockwell-Compumatic</Description>
+			<Type>K</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="64">
+		<HexNum>501-6327CD5</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Compumatic Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="65">
+		<HexNum>501-6327KD5</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Rockwell-Compumatic</Description>
+			<Type>K</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="66">
+		<HexNum>501-6327HH</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="67">
+		<HexNum>501-10050RB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="68">
+		<HexNum>501-10051RB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="69">
+		<HexNum>501-10052RB</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="70">
+		<HexNum>501-7786PT2</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Pulse Adapter 6P/Min</Description>
+			<Type>B</Type>
+			<Tamper>False</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Temp Adapter</Description>
+			<Type>T</Type>
+			<Tamper>False</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="71">
+		<HexNum>501-6327R-ER2</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>ER2 Sensor</Description>
+			<Type>W</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="72">
+		<HexNum>501-7712EBS</HexNum>
+		<Model>A</Model>
+		<RequiresAlarmProfile>true</RequiresAlarmProfile>
+		<Port Number="1">
+			<Description>Wafer</Description>
+			<Type>M</Type>
+			<Tamper>Int</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="73">
+		<HexNum>501-11586</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="74">
+		<HexNum>501-10152</HexNum>
+		<Model>Z</Model>
+		<IsTables>1</IsTables>
+		<MtuDemand>true</MtuDemand>
+		<RequiresAlarmProfile>true</RequiresAlarmProfile>
+	</Mtu>
+	<Mtu ID="75">
+		<HexNum>501-9845</HexNum>
+		<Model>Z</Model>
+		<IsTables>1</IsTables>
+		<MtuDemand>false</MtuDemand>
+		<RequiresAlarmProfile>true</RequiresAlarmProfile>
+	</Mtu>
+	<Mtu ID="76">
+		<HexNum>501-10051R</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>ReedWeigand Pulse</Description>
+			<Type>RW</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="77">
+		<HexNum>501-10051H</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="78">
+		<HexNum>501-10051H1</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Hasco Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="79">
+		<HexNum>501-10051C</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Compumatic Sensor</Description>
+			<Type>R</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="80">
+		<HexNum>501-10051K</HexNum>
+		<Model>A</Model>
+		<Port Number="1">
+			<Description>Rockwell-Compumatic</Description>
+			<Type>K</Type>
+			<Tamper>External</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="81">
+		<HexNum>501-10051D</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+	<Mtu ID="84">
+		<HexNum>501-6327DD</HexNum>
+		<Model>C</Model>
+		<Port Number="1">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+		<Port Number="2">
+			<Description>Encoder</Description>
+			<Type>E</Type>
+			<Tamper>None</Tamper>
+		</Port>
+	</Mtu>
+
+</MtuTypes>

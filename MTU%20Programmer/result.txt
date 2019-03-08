@@ -1,0 +1,3792 @@
+commit b181d834ba63fd110835881a5c9d44df7455b01c
+Author: AirBizintek <airbizintek@MacBook-Air-de-AirBizintek.local>
+Date:   Wed Jan 9 18:36:01 2019 -0500
+
+    Fixed scripted mode in general and AddMtu dynamic error in scripted
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index a60f872..b1a4f0e 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -299,41 +299,20 @@ namespace aclara_meters
+ 
+             #region Scripting Mode Detection 
+ 
+-            Device.BeginInvokeOnMainThread(() =>
+-            {
+-                MainPage = new NavigationPage(new ErrorInitView("scripting"));
+-            });
+-
+-
+             Task.Run(async () =>
+             {
+                 await Task.Delay(1100); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+                 {
+-                    if (!ScriptingMode)
+-                    {
+-                        // Load pages container ( ContentPage )
++                    // Load pages container ( ContentPage )
++                    if ( ! ScriptingMode )
+                         Device.BeginInvokeOnMainThread(() =>
+                         {
+                             MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
+                         });
+-
+-                       
+-                    }
+-                    else
+-                    {
+-
+-                        Device.BeginInvokeOnMainThread(() =>
+-                        {
+-                            MainPage = new NavigationPage(new ErrorInitView("scripting"));
+-                        });
+-
+-
+-                    }
+                 });
+             });
+ 
+             #endregion
+-
+         }
+ 
+         private void LoadXmls ()
+
+commit 2819bcc626fb91253eb63a7bc4f9a3fb5bf8c5cc
+Author: AirBizintek <airbizintek@MacBook-Air-de-AirBizintek.local>
+Date:   Wed Jan 9 11:03:38 2019 -0500
+
+    Some changes on GetPath method and fixes to finish with last changes
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index bd76d3e..a60f872 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -36,6 +36,8 @@ namespace aclara_meters
+ 
+         #region Constants
+ 
++        private const bool   DEBUG_MODE_ON = false;
++
+         private const string SO_ANDROID = "Android";
+         private const string SO_IOS     = "iOS";
+         private const string SO_UNKNOWN = "Unknown";
+@@ -145,14 +147,16 @@ namespace aclara_meters
+ 
+             AppResources.Culture = CrossMultilingual.Current.DeviceCultureInfo;
+ 
+-            // TEST
+-            //Mobile.GetPath ();
+-            //this.LoadXmlsAndCreateContainer ( dialogs, data );
+-
+-            // Downloads, if necesary, and loads configuration from XML files
+-            if (HasDeviceAllXmls())
+-                LoadXmlsAndCreateContainer(dialogs, data);
+-            else DownloadXmlsIfNecessary(dialogs, data);
++            // Force to not download server XML files
++            if ( DEBUG_MODE_ON )
++                this.LoadXmlsAndCreateContainer ( dialogs, data );
++            else
++            {
++                // Downloads, if necesary, and loads configuration from XML files
++                if ( this.HasDeviceAllXmls () )
++                     this.LoadXmlsAndCreateContainer ( dialogs, data );
++                else this.DownloadXmlsIfNecessary ( dialogs, data );
++            }
+         }
+ 
+         #endregion
+@@ -399,7 +403,7 @@ namespace aclara_meters
+ 
+             if ( url != null )
+             {
+-                string path = Mobile.pathCache;
++                string path = Mobile.GetPath ();
+                 NameValueCollection query = HttpUtility.ParseQueryString ( url.Query );
+ 
+                 var script_name = query.Get ( "script_name" );
+
+commit 0b5043349968f2e803612b7eca1c9a7955d1e6f3
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Jan 9 12:47:44 2019 +0100
+
+    Typo on element IBluetoothLowEnergyAdapter
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 05af8f8..bd76d3e 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -90,7 +90,7 @@ namespace aclara_meters
+            
+         }
+ 
+-        public FormsApp( BluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
++        public FormsApp( IBluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
+         {
+             InitializeComponent();
+ 
+
+commit c39bcb366a9f883956695ef872d3f0448e329bbb
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Jan 9 12:44:54 2019 +0100
+
+    Cleaned the code a bit...
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 62bafc0..05af8f8 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -40,6 +40,7 @@ namespace aclara_meters
+         private const string SO_IOS     = "iOS";
+         private const string SO_UNKNOWN = "Unknown";
+         private const string XML_EXT    = ".xml";
++        public static bool ScriptingMode = false;
+ 
+         private string[] filesToCheck =
+         {
+@@ -64,6 +65,11 @@ namespace aclara_meters
+         public static Configuration config;
+         public static IBlePeripheral peripheral;
+ 
++        private IBluetoothLowEnergyAdapter adapter;
++        private List<string> listaDatos;
++        private IUserDialogs dialogs;
++        private string appVersion;
++
+         #endregion
+ 
+         #region Properties
+@@ -84,42 +90,31 @@ namespace aclara_meters
+            
+         }
+ 
+-
+-        IBluetoothLowEnergyAdapter adapter;
+-        List<string> listaDatos;
+-        IUserDialogs dialogs;
+-        string appVersion;
+-
+-
+-        public FormsApp(
+-           IBluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
+-
+-
+-            {
+-
++        public FormsApp( BluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
++        {
+             InitializeComponent();
+ 
+-
+             this.adapter = adapter;
+             this.listaDatos = listaDatos;
+             this.dialogs = dialogs;
+             this.appVersion = appVersion;
+ 
+-
+             Task.Factory.StartNew(ThreadProcedure);
+ 
+-
+-
+         }
+ 
++        #region iPad & iPhone devices have a different behaviour when initializating the app, this sems to fix it
++
+         private void ThreadProcedure()
+         {
+-            TestMethod(adapter, listaDatos, dialogs, appVersion);
++            CallToInitApp(adapter, listaDatos, dialogs, appVersion);
+         }
+ 
+-        private void TestMethod(IBluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
++
++        private void CallToInitApp(IBluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
+         {
+             appVersion_str = appVersion;
++
+             deviceId = CrossDeviceInfo.Current.Id;
+ 
+             // Profiles manager
+@@ -160,6 +155,7 @@ namespace aclara_meters
+             else DownloadXmlsIfNecessary(dialogs, data);
+         }
+ 
++        #endregion
+ 
+ 
+         #endregion
+@@ -258,7 +254,6 @@ namespace aclara_meters
+                                 ftp_array_files.Add(file);
+                             }
+ 
+-
+                         }
+ 
+                         string path = Mobile.GetPath ();
+@@ -306,7 +301,6 @@ namespace aclara_meters
+             });
+ 
+ 
+-
+             Task.Run(async () =>
+             {
+                 await Task.Delay(1100); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+@@ -334,9 +328,6 @@ namespace aclara_meters
+                 });
+             });
+ 
+-
+-           
+-
+             #endregion
+ 
+         }
+@@ -386,34 +377,28 @@ namespace aclara_meters
+ 
+         #endregion
+ 
+-        public static bool ScriptingMode = false;
++
+ 
+         public void HandleUrl ( Uri url , IBluetoothLowEnergyAdapter adapter)
+         {
+-
+-
+-
+             try
+             {
+                 ScriptingMode = true; 
+                 ble_interface.Close();
+-                adapter.DisableAdapter();
++                #region WE HAVE TO DISABLE THE BLUETOOTH ANTENNA, IN ORDER TO DISCONNECT FROM PREVIOUS CONNECTION, IF WE WENT FROM INTERACTIVE TO SCRIPTING MODE
+ 
++                adapter.DisableAdapter();
++                adapter.EnableAdapter(); //Android shows a window to allow bluetooth
+ 
+-                adapter.EnableAdapter();
++                #endregion
+             }
+             catch (Exception e)
+             {
+                 Console.WriteLine(e.StackTrace);
+             }
+ 
+-
+             if ( url != null )
+             {
+-             
+-                //adapter.DisableAdapter();
+-                //adapter.EnableAdapter();
+-
+                 string path = Mobile.pathCache;
+                 NameValueCollection query = HttpUtility.ParseQueryString ( url.Query );
+ 
+@@ -429,8 +414,7 @@ namespace aclara_meters
+ 
+                 if ( callback != null ) { /* ... */ }
+ 
+-               
+-
++            
+                 Task.Run(async () =>
+                 {
+                     await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread ( async () =>
+
+commit 687251d87199ecbeac7d276d0383fff0791a83ac
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Jan 9 10:50:39 2019 +0100
+
+    Stable, works on tablet. Redone starting app logic. New StartFactory Tasks, runUiThreaded Navigations.
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 029f6bb..62bafc0 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -55,7 +55,7 @@ namespace aclara_meters
+ 
+         #region Attributes
+ 
+-        public string appVersion;
++        public string appVersion_str;
+         public string deviceId;
+         
+         public static ICredentialsService credentialsService { get; private set; }
+@@ -80,29 +80,60 @@ namespace aclara_meters
+         public FormsApp ()
+         {
+             InitializeComponent ();
++
++           
+         }
+ 
+-        public FormsApp (
+-            IBluetoothLowEnergyAdapter adapter,
+-            IUserDialogs dialogs,
+-            List<string> listaDatos,
+-            string appVersion)
+-            : this ()
+-        {
++
++        IBluetoothLowEnergyAdapter adapter;
++        List<string> listaDatos;
++        IUserDialogs dialogs;
++        string appVersion;
++
++
++        public FormsApp(
++           IBluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
++
++
++            {
++
++            InitializeComponent();
++
++
++            this.adapter = adapter;
++            this.listaDatos = listaDatos;
++            this.dialogs = dialogs;
+             this.appVersion = appVersion;
+-            this.deviceId   = CrossDeviceInfo.Current.Id;
++
++
++            Task.Factory.StartNew(ThreadProcedure);
++
++
++
++        }
++
++        private void ThreadProcedure()
++        {
++            TestMethod(adapter, listaDatos, dialogs, appVersion);
++        }
++
++        private void TestMethod(IBluetoothLowEnergyAdapter adapter, List<string> listaDatos, IUserDialogs dialogs, string appVersion)
++        {
++            appVersion_str = appVersion;
++            deviceId = CrossDeviceInfo.Current.Id;
+ 
+             // Profiles manager
+-            credentialsService = new CredentialsService ();
++            credentialsService = new CredentialsService();
+ 
+             // Initializes Bluetooth
+-            ble_interface = new BleSerial ( adapter );
++            ble_interface = new BleSerial(adapter);
+ 
+             string data = string.Empty;
+-            if ( listaDatos.Count != 0 ||
+-                 listaDatos != null )
+-                for ( int i = 0; i < listaDatos.Count; i++ )
+-                    data = data + listaDatos[ i ] + "\r\n";
++
++            if (listaDatos.Count != 0 ||
++                 listaDatos != null)
++                for (int i = 0; i < listaDatos.Count; i++)
++                    data = data + listaDatos[i] + "\r\n";
+ 
+             string base64CertificateString = "";
+ 
+@@ -112,9 +143,9 @@ namespace aclara_meters
+                 byte[] bytes = Convert.FromBase64String(base64CertificateString);
+                 X509Certificate2 x509certificate = new X509Certificate2(bytes);
+             }
+-            catch ( Exception e )
++            catch (Exception e)
+             {
+-                Console.WriteLine ( e.StackTrace );
++                Console.WriteLine(e.StackTrace);
+             }
+ 
+             AppResources.Culture = CrossMultilingual.Current.DeviceCultureInfo;
+@@ -124,11 +155,13 @@ namespace aclara_meters
+             //this.LoadXmlsAndCreateContainer ( dialogs, data );
+ 
+             // Downloads, if necesary, and loads configuration from XML files
+-            if ( this.HasDeviceAllXmls () )
+-                 this.LoadXmlsAndCreateContainer ( dialogs, data );
+-            else this.DownloadXmlsIfNecessary ( dialogs, data );
++            if (HasDeviceAllXmls())
++                LoadXmlsAndCreateContainer(dialogs, data);
++            else DownloadXmlsIfNecessary(dialogs, data);
+         }
+ 
++
++
+         #endregion
+ 
+         #region Configuration XMLs
+@@ -172,24 +205,40 @@ namespace aclara_meters
+             string data )
+         {
+             // Checks network channels
+-            if ( Mobile.IsNetAvailable () )
++            if (Mobile.IsNetAvailable())
+             {
+                 // Donwloads all configuracion XML files
+-                if ( this.DownloadXmls () )
+-                     this.LoadXmlsAndCreateContainer ( dialogs, data );
+-                else this.MainPage = new NavigationPage ( new ErrorInitView ( "Error Downloading files" ) );
++                if (this.DownloadXmls())
++                {
++                    this.LoadXmlsAndCreateContainer(dialogs, data);
++                }
++                else
++                {
++                    Device.BeginInvokeOnMainThread(() =>
++                    {
++                        this.MainPage = new NavigationPage(new ErrorInitView("Error Downloading files"));
++                    });
++                }
++            }
++            else 
++            {
++                Device.BeginInvokeOnMainThread(() =>
++                {
++                    this.MainPage = new NavigationPage(new ErrorInitView());
++                });
++
+             }
+-            else this.MainPage = new NavigationPage ( new ErrorInitView () );
+         }
+ 
+         private bool DownloadXmls ()
+         {
+             try
+             {
+-                using (SftpClient sftp = new SftpClient(host, username, password))
++                using (SftpClient sftp = new SftpClient(host, 22, username, password))
+                 {
+                     try
+                     {
++
+                         sftp.Connect();
+ 
+ 
+@@ -251,7 +300,12 @@ namespace aclara_meters
+ 
+             #region Scripting Mode Detection 
+ 
+-            MainPage = new NavigationPage(new ErrorInitView("scripting"));
++            Device.BeginInvokeOnMainThread(() =>
++            {
++                MainPage = new NavigationPage(new ErrorInitView("scripting"));
++            });
++
++
+ 
+             Task.Run(async () =>
+             {
+@@ -260,11 +314,22 @@ namespace aclara_meters
+                     if (!ScriptingMode)
+                     {
+                         // Load pages container ( ContentPage )
+-                        MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
++                        Device.BeginInvokeOnMainThread(() =>
++                        {
++                            MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
++                        });
++
++                       
+                     }
+                     else
+                     {
+-                        MainPage = new NavigationPage(new ErrorInitView("scripting"));
++
++                        Device.BeginInvokeOnMainThread(() =>
++                        {
++                            MainPage = new NavigationPage(new ErrorInitView("scripting"));
++                        });
++
++
+                     }
+                 });
+             });
+@@ -286,13 +351,13 @@ namespace aclara_meters
+                 case Device.Android:
+                     config.setPlatform   ( SO_ANDROID );
+                     config.setAppName    ( AppName    );
+-                    config.setVersion    ( appVersion );
++                    config.setVersion    ( appVersion_str);
+                     config.setDeviceUUID ( deviceId   );
+                     break;
+                 case Device.iOS:
+                     config.setPlatform   ( SO_IOS     );
+                     config.setAppName    ( AppName    );
+-                    config.setVersion    ( appVersion );
++                    config.setVersion    ( appVersion_str);
+                     config.setDeviceUUID ( deviceId   );
+                     break;
+                 default:
+
+commit 8d1e8faf943900430f35d19e0ee84d3d1aedc87d
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Jan 8 13:00:08 2019 +0100
+
+    Unstable, fixed connection problems on scripting mode
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 95a7164..029f6bb 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -249,8 +249,31 @@ namespace aclara_meters
+             // Load configuration from XML files
+             this.LoadXmls ();
+ 
+-            // Load pages container ( ContentPage )
+-            this.MainPage = new NavigationPage ( new AclaraViewLogin ( dialogs, data ) );
++            #region Scripting Mode Detection 
++
++            MainPage = new NavigationPage(new ErrorInitView("scripting"));
++
++            Task.Run(async () =>
++            {
++                await Task.Delay(1100); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
++                {
++                    if (!ScriptingMode)
++                    {
++                        // Load pages container ( ContentPage )
++                        MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
++                    }
++                    else
++                    {
++                        MainPage = new NavigationPage(new ErrorInitView("scripting"));
++                    }
++                });
++            });
++
++
++           
++
++            #endregion
++
+         }
+ 
+         private void LoadXmls ()
+@@ -298,15 +321,20 @@ namespace aclara_meters
+ 
+         #endregion
+ 
++        public static bool ScriptingMode = false;
++
+         public void HandleUrl ( Uri url , IBluetoothLowEnergyAdapter adapter)
+         {
+ 
++
++
+             try
+             {
+-
++                ScriptingMode = true; 
+                 ble_interface.Close();
+                 adapter.DisableAdapter();
+ 
++
+                 adapter.EnableAdapter();
+             }
+             catch (Exception e)
+@@ -372,13 +400,6 @@ namespace aclara_meters
+         #endregion
+ 
+ 
+-        #region External Reconnect
+-
+-        public static void externalReconnect(Boolean reassociate)
+-        {
+-            FormsApp.ble_interface.Open(peripheral, reassociate);
+-        }
+-
+-        #endregion
++ 
+     }
+ }
+
+commit 0411381e52b9bbf455348fb4772a8c0be773c6a5
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Jan 7 17:39:34 2019 +0100
+
+    Unstable, scripting mode ble reconnection behaviour
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 9f59dd3..95a7164 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -18,6 +18,7 @@ using System.Threading.Tasks;
+ using System.Web;
+ using Xamarin.Forms;
+ using Xamarin.Forms.Xaml;
++using nexus.protocols.ble.scan;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -61,6 +62,7 @@ namespace aclara_meters
+         public static BleSerial ble_interface;
+         public static Logger loggger;
+         public static Configuration config;
++        public static IBlePeripheral peripheral;
+ 
+         #endregion
+ 
+@@ -296,10 +298,29 @@ namespace aclara_meters
+ 
+         #endregion
+ 
+-        public void HandleUrl ( Uri url )
++        public void HandleUrl ( Uri url , IBluetoothLowEnergyAdapter adapter)
+         {
++
++            try
++            {
++
++                ble_interface.Close();
++                adapter.DisableAdapter();
++
++                adapter.EnableAdapter();
++            }
++            catch (Exception e)
++            {
++                Console.WriteLine(e.StackTrace);
++            }
++
++
+             if ( url != null )
+             {
++             
++                //adapter.DisableAdapter();
++                //adapter.EnableAdapter();
++
+                 string path = Mobile.pathCache;
+                 NameValueCollection query = HttpUtility.ParseQueryString ( url.Query );
+ 
+@@ -315,12 +336,15 @@ namespace aclara_meters
+ 
+                 if ( callback != null ) { /* ... */ }
+ 
++               
++
+                 Task.Run(async () =>
+                 {
+                     await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread ( async () =>
+                     {
+-                        Settings.IsLoggedIn = false;
+-                        credentialsService.DeleteCredentials ();
++                        //Settings.IsLoggedIn = false;
++                        //credentialsService.DeleteCredentials ();
++
+ 
+                         MainPage = new NavigationPage(new AclaraViewScripting ( path, callback, script_name ) );
+                         await MainPage.Navigation.PopToRootAsync ( true );
+@@ -346,5 +370,15 @@ namespace aclara_meters
+         }
+ 
+         #endregion
++
++
++        #region External Reconnect
++
++        public static void externalReconnect(Boolean reassociate)
++        {
++            FormsApp.ble_interface.Open(peripheral, reassociate);
++        }
++
++        #endregion
+     }
+ }
+
+commit bcf23f37807a62b30f0d10c803c05f072c2700e8
+Author: h.foronda <h.foronda@DESKTOP-JONMIKE>
+Date:   Fri Jan 4 17:23:31 2019 +0100
+
+    Used ForceTimeSync in AddMtu, auto-selected ReadInterval based on Global NormXmiInterval and AccountNumber confirmation
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index c7e3fcc..9f59dd3 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -117,6 +117,10 @@ namespace aclara_meters
+ 
+             AppResources.Culture = CrossMultilingual.Current.DeviceCultureInfo;
+ 
++            // TEST
++            //Mobile.GetPath ();
++            //this.LoadXmlsAndCreateContainer ( dialogs, data );
++
+             // Downloads, if necesary, and loads configuration from XML files
+             if ( this.HasDeviceAllXmls () )
+                  this.LoadXmlsAndCreateContainer ( dialogs, data );
+@@ -206,27 +210,19 @@ namespace aclara_meters
+ 
+                         }
+ 
+-                        var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-
+-                        if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-                        {
+-                            xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
+-                        }
++                        string path = Mobile.GetPath ();
+ 
+-                        foreach (var file in ftp_array_files)
++                        foreach ( var file in ftp_array_files )
+                         {
+                             string remoteFileName = file.Name;
+ 
+-
+-                            using (Stream file1 = File.OpenWrite(Path.Combine(xml_documents, remoteFileName)))
++                            using (Stream file1 = File.OpenWrite(Path.Combine( path, remoteFileName)))
+                             {
+                                 sftp.DownloadFile(Path.Combine(pathRemoteFile, remoteFileName), file1);
+                             }
+-
+                         }
+ 
+-
+-                        sftp.Disconnect();
++                        sftp.Disconnect ();
+ 
+                         return true;
+                     }
+
+commit 210d6a7c9de04347c4885483edbfaf917b796432
+Author: h.foronda <h.foronda@DESKTOP-JONMIKE>
+Date:   Thu Dec 27 13:09:24 2018 +0100
+
+    Refactoring code and unifying ui
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index e3255f1..c7e3fcc 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -1,26 +1,23 @@
+-using System;
+-using Acr.UserDialogs;
++using aclara_meters.Helpers;
+ using aclara_meters.view;
+-using nexus.protocols.ble;
+-using Xamarin.Forms;
+-using Xamarin.Forms.Xaml;
++using System.Collections.Specialized;
++using Acr.UserDialogs;
+ using ble_library;
+-using System.Web;
++using MTUComm;
++using nexus.protocols.ble;
++using Plugin.DeviceInfo;
++using Plugin.Multilingual;
++using Renci.SshNet;
++using Renci.SshNet.Sftp;
++using System;
+ using System.Collections.Generic;
+-using System.Xml.Linq;
+ using System.IO;
++using System.Linq;
+ using System.Security.Cryptography.X509Certificates;
+-using System.Security.Cryptography;
+-using Plugin.DeviceInfo;
+-using MTUComm;
+-using aclara_meters.Helpers;
+ using System.Threading.Tasks;
+-using Renci.SshNet;
+-using System.Linq;
+-using System.Globalization;
+-using Xamarin.Essentials;
+-using Renci.SshNet.Sftp;
+-using Plugin.Multilingual;
++using System.Web;
++using Xamarin.Forms;
++using Xamarin.Forms.Xaml;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -36,210 +33,150 @@ namespace aclara_meters
+ 
+         #endregion
+ 
+-        public static string AppName { get { return "Aclara MTU Programmer"; } }
+-        public static ICredentialsService CredentialsService { get; private set; }
+-        public static BleSerial ble_interface;
+-        //public static Lexi.Lexi lexi;
+-
+-        public string Version;
+-        public string deviceId;
++        #region Constants
+ 
+-        public static Logger loggger;
+-        public static Configuration config;
+-
+-        public FormsApp()
+-        {
+-            InitializeComponent();
+-            CredentialsService = new CredentialsService();
+-        }
++        private const string SO_ANDROID = "Android";
++        private const string SO_IOS     = "iOS";
++        private const string SO_UNKNOWN = "Unknown";
++        private const string XML_EXT    = ".xml";
+ 
+-        public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs)
++        private string[] filesToCheck =
+         {
+-            InitializeComponent();
++            "Alarm",
++            "DemandConf",
++            "Global",
++            "Interface",
++            "Meter",
++            "Mtu"
++        };
+ 
+-            //Gestor de cuentas
+-            CredentialsService = new CredentialsService();
+-
+-            //Inicializar libreria personalizada
+-            ble_interface = new BleSerial(adapter);
+-            //lexi = new Lexi.Lexi(ble_interface, 10000);
+-
+-            // XML FILE FTP CREATION
+-            //var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++        #endregion
+ 
+-            //var filename_meter = Path.Combine(xml_documents, "Meter.xml");
+-            // var filename_mtu = Path.Combine(xml_documents, "Mtu.xml");
++        #region Attributes
+ 
+-            // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
+-            //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
++        public string appVersion;
++        public string deviceId;
++        
++        public static ICredentialsService credentialsService { get; private set; }
++        public static BleSerial ble_interface;
++        public static Logger loggger;
++        public static Configuration config;
+ 
+-            LoadConfiguration();
++        #endregion
+ 
+-            //Cargar la pantalla principal
+-            MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+-        }
++        #region Properties
+ 
+-        private void LoadConfiguration()
++        public static string AppName
+         {
+-            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-
+-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-            {
+-                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
+-            }
+-
+-            config = new Configuration(xml_documents);
+-
+-            loggger = new Logger(config);
+-
+-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-            {
+-                config.setPlatform("Android"); config.setAppName(AppName); config.setVersion(Version); config.setDeviceUUID(deviceId);
+-
+-            }
+-            else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
+-            {
+-                config.setPlatform("iOS"); config.setAppName(AppName); config.setVersion(Version); config.setDeviceUUID(deviceId);
+-            }
+-            else
+-            {
+-                config.setPlatform("Unknown");
+-            }
+-
+-            Configuration.SetInstance ( config );
++            get { return "Aclara MTU Programmer"; }
+         }
+ 
++        #endregion
+ 
+-        /*--------------------------------------------------*/
+-        /*      Extensions Requests are handled here        */
++        #region Initialization
+ 
+-        public async void HandleUrl(string url, string path)
++        public FormsApp ()
+         {
+-            Uri newUri = null;
+-
+-            try{
+-                newUri = new Uri(url);
+-
+-                HandleUrl(newUri);
+-            }catch (Exception j){
+-                Console.WriteLine(j.StackTrace);
+-            }
+-
+-           
+-
+-
+-          
++            InitializeComponent ();
+         }
+ 
+-        public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs, List<string> listaDatos, string AppVersion)
++        public FormsApp (
++            IBluetoothLowEnergyAdapter adapter,
++            IUserDialogs dialogs,
++            List<string> listaDatos,
++            string appVersion)
++            : this ()
+         {
+-            InitializeComponent();
+-
+-            Version = AppVersion;
+-
+-            deviceId = CrossDeviceInfo.Current.Id;
+-
+-            //Gestor de cuentas
+-            CredentialsService = new CredentialsService();
++            this.appVersion = appVersion;
++            this.deviceId   = CrossDeviceInfo.Current.Id;
+ 
+-            //Inicializar libreria personalizada
+-            ble_interface = new BleSerial(adapter);
+-           
++            // Profiles manager
++            credentialsService = new CredentialsService ();
+ 
+-            //ble_interface.Close ();
++            // Initializes Bluetooth
++            ble_interface = new BleSerial ( adapter );
+ 
+-
+-            string data = "";
+-
+-            if (listaDatos.Count != 0 || listaDatos != null)
+-            {
+-                
+- 
+-                for (int i = 0; i < listaDatos.Count; i++)
+-                {
+-                    data = data + listaDatos[i] + "\r\n";
+-                }
+-
+-              
+-            }
++            string data = string.Empty;
++            if ( listaDatos.Count != 0 ||
++                 listaDatos != null )
++                for ( int i = 0; i < listaDatos.Count; i++ )
++                    data = data + listaDatos[ i ] + "\r\n";
+ 
+             string base64CertificateString = "";
+ 
+             try
+             {
+-
+                 base64CertificateString = listaDatos[2].Replace("cert_file: ", "");
+                 byte[] bytes = Convert.FromBase64String(base64CertificateString);
+                 X509Certificate2 x509certificate = new X509Certificate2(bytes);
+-
+-            }catch (Exception e)
++            }
++            catch ( Exception e )
+             {
+-                Console.WriteLine(e.StackTrace);
++                Console.WriteLine ( e.StackTrace );
+             }
+ 
+             AppResources.Culture = CrossMultilingual.Current.DeviceCultureInfo;
+ 
++            // Downloads, if necesary, and loads configuration from XML files
++            if ( this.HasDeviceAllXmls () )
++                 this.LoadXmlsAndCreateContainer ( dialogs, data );
++            else this.DownloadXmlsIfNecessary ( dialogs, data );
++        }
+ 
++        #endregion
+ 
+-      #region Init Configuration Files
+-
+-            if ( CheckForLocalFiles() )
+-            {
+-                ItJustWorks(dialogs, data);
+-
+-            }else{
+-                
+-                DownloadConfigurationFiles(dialogs, data);
+-            }
+-
+-      #endregion
+-
+-        }
++        #region Configuration XMLs
+ 
++        private bool HasDeviceAllXmls ()
++        {
++            string path = Mobile.GetPath ();
+ 
++            // Directory could exist but is empty
++            if ( string.IsNullOrEmpty ( path ) )
++                return false;
+ 
+-    #region Init Configuration Files Implementation
++            // Directory exists and is not empty
++            string[] filesLocal = Directory.GetFiles ( path );
+ 
+-        private async void DownloadConfigurationFiles(IUserDialogs dialogs, string data)
+-        {
++            //if ( ! filesLocal.Any () )
++            //    return false;
+             
+-            #region Check the Network channels
+-
+-            if (CheckIfNetworkIsAvailable())
++            int count = 0;
++            foreach ( string filePath in filesLocal )
+             {
+-                #region Download all the data
+-
+-                if( DownloadInitialConfigFiles() )
++                foreach ( string fileNeeded in filesToCheck )
+                 {
+-                    ItJustWorks(dialogs, data);
+-                }else{
+-                    
+-                    #region Error Dialog Must be shown on downloading
++                    string compareStr = fileNeeded + XML_EXT;
++                    compareStr = compareStr.Replace ( path, "" );
+ 
+-                    MainPage = new NavigationPage(new ErrorInitView("Error Downloading files"));
+-
+-                    #endregion
++                    string fileStr = filePath.ToString ();
++                    fileStr = fileStr.Replace ( path, "" );
++                    
++                    if ( fileStr.Equals ( compareStr ) &&
++                         ++count >= filesToCheck.Length )
++                        return true;
+                 }
+-
+-                #endregion
+-
+             }
+-            else
+-            {
+-                #region Error Dialog Must be shown on Loading
+ 
+-                MainPage = new NavigationPage(new ErrorInitView());
++            return false;
++        }
+ 
+-                #endregion
++        private void DownloadXmlsIfNecessary (
++            IUserDialogs dialogs,
++            string data )
++        {
++            // Checks network channels
++            if ( Mobile.IsNetAvailable () )
++            {
++                // Donwloads all configuracion XML files
++                if ( this.DownloadXmls () )
++                     this.LoadXmlsAndCreateContainer ( dialogs, data );
++                else this.MainPage = new NavigationPage ( new ErrorInitView ( "Error Downloading files" ) );
+             }
+-
+-            #endregion
+-
++            else this.MainPage = new NavigationPage ( new ErrorInitView () );
+         }
+ 
+-        #region Initial Config Files Download from SFTP
+-
+-        private bool DownloadInitialConfigFiles()
++        private bool DownloadXmls ()
+         {
+             try
+             {
+@@ -249,7 +186,7 @@ namespace aclara_meters
+                     {
+                         sftp.Connect();
+ 
+-                   
++
+                         /*--------------------------------------------------*/
+                         // List all posible files in the documents directory 
+                         // Check if file's lastwritetime is the lastest 
+@@ -261,10 +198,11 @@ namespace aclara_meters
+                         foreach (var file in ftp_files)
+                         {
+ 
+-                            if(file.Name.Contains(".xml")){
++                            if (file.Name.Contains(".xml"))
++                            {
+                                 ftp_array_files.Add(file);
+                             }
+-                           
++
+ 
+                         }
+ 
+@@ -278,16 +216,16 @@ namespace aclara_meters
+                         foreach (var file in ftp_array_files)
+                         {
+                             string remoteFileName = file.Name;
+-                         
+ 
+-                            using (Stream file1 = File.OpenWrite( Path.Combine (xml_documents, remoteFileName) ))
++
++                            using (Stream file1 = File.OpenWrite(Path.Combine(xml_documents, remoteFileName)))
+                             {
+-                                sftp.DownloadFile( Path.Combine (pathRemoteFile, remoteFileName ), file1);
++                                sftp.DownloadFile(Path.Combine(pathRemoteFile, remoteFileName), file1);
+                             }
+ 
+                         }
+ 
+-                       
++
+                         sftp.Disconnect();
+ 
+                         return true;
+@@ -308,116 +246,45 @@ namespace aclara_meters
+             return false;
+         }
+ 
+-        #endregion
+-
+-        private bool CheckIfNetworkIsAvailable()
++        private void LoadXmlsAndCreateContainer ( IUserDialogs dialogs, string data )
+         {
+-            var current = Connectivity.NetworkAccess;
++            // Load configuration from XML files
++            this.LoadXmls ();
+ 
+-            var profiles = Connectivity.Profiles;
+-
+-            if (profiles.Contains(ConnectionProfile.WiFi))
+-            {
+-                if (current == NetworkAccess.Internet)
+-                {
+-                    return true;
+-                    // Connection to internet is available
+-                }
+-            }else 
+-            if (profiles.Contains(ConnectionProfile.Cellular))
+-            {
+-                if (current == NetworkAccess.Internet)
+-                {
+-                    return true;
+-                    // Connection to internet is available
+-                }
+-            }
+-
+-            return false;
+-        }
+-
+-
+-        #region Testing Purposes - Not final - Control the connectivity to network in Realtime
+-
+-        /*
+-        public ConnectivityTest()
+-        {
+-            // Register for connectivity changes, be sure to unsubscribe when finished
+-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
++            // Load pages container ( ContentPage )
++            this.MainPage = new NavigationPage ( new AclaraViewLogin ( dialogs, data ) );
+         }
+ 
+-        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
++        private void LoadXmls ()
+         {
+-            var access = e.NetworkAccess;
+-            var profiles = e.Profiles;
+-        }
+-        */
+-        #endregion
+-
+-        private void ItJustWorks(IUserDialogs dialogs, string data)
+-        {
+-
+-            LoadConfiguration();
+-            //Load Login View
+-            MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
+-        }
+-
+-        #region Check if Local config files exists
++            config  = Configuration.GetInstance ();
++            loggger = new Logger ( config );
+ 
+-        private bool CheckForLocalFiles()
+-        {
+-            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-          
+-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-            {
+-                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
+-            }
+-
+-            var filesLocal = System.IO.Directory.GetFiles(xml_documents);
+-
+-            if (!filesLocal.Any())
+-                return false;
+-
+-            string[] filesToCheck = {
+-                                    "Alarm.xml",
+-                                    "DemandConf.xml",
+-                                    "Global.xml",
+-                                    "Interface.xml",
+-                                    "Meter.xml",
+-                                    "Mtu.xml"
+-                                 };
+-
+-            int ContOfChecks = 0;
+-
+-            foreach (var file in filesLocal)
+-            {
+-                foreach (string checkStr in filesToCheck)
+-                {
+-                    string compareStr = checkStr;
+-                    compareStr = compareStr.Replace(xml_documents, "");
+-
+-                    string fileStr = file.ToString();
+-                    fileStr = fileStr.Replace(xml_documents + "/", "");
+-                    
+-                    if (fileStr.Equals(compareStr))
+-                    {
+-                        ContOfChecks++;
+-                    }
+-                }
+-            }
+-
+-            if (ContOfChecks < filesToCheck.Length)
++            switch ( Device.RuntimePlatform )
+             {
+-                return false;
++                case Device.Android:
++                    config.setPlatform   ( SO_ANDROID );
++                    config.setAppName    ( AppName    );
++                    config.setVersion    ( appVersion );
++                    config.setDeviceUUID ( deviceId   );
++                    break;
++                case Device.iOS:
++                    config.setPlatform   ( SO_IOS     );
++                    config.setAppName    ( AppName    );
++                    config.setVersion    ( appVersion );
++                    config.setDeviceUUID ( deviceId   );
++                    break;
++                default:
++                    config.setPlatform   ( SO_UNKNOWN );
++                    break;
+             }
+ 
+-            return true;
++            Configuration.SetInstance ( config );
+         }
+ 
+         #endregion
+ 
+-
+-    #endregion
++        #region Base64
+ 
+         public static string Base64Decode(string base64EncodedData)
+         {
+@@ -431,63 +298,43 @@ namespace aclara_meters
+             return System.Convert.ToBase64String(plainTextBytes);
+         }
+ 
+-        public void HandleUrl(Uri url)
+-        {
+-            if (url == null)
+-            {
++        #endregion
+ 
+-            }
+-            else
++        public void HandleUrl ( Uri url )
++        {
++            if ( url != null )
+             {
+-                var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-                var filename = "";
+-
+-                if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-                {
+-                    xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
+-                }
+-
+-                //string decode1 = System.Web.HttpUtility.UrlDecode(url.ToString());
+-                //var uri = new Uri(decode1);
+-                var query = HttpUtility.ParseQueryString(url.Query);
+-
+-                var script_name = query.Get("script_name");
+-                var script_data = query.Get("script_data");
+-                var callback = query.Get("callback");
+-
+-
+-                if (script_name != null)
+-                {
+-                    filename = Path.Combine(xml_documents, script_name.ToString());
+-                }
++                string path = Mobile.pathCache;
++                NameValueCollection query = HttpUtility.ParseQueryString ( url.Query );
+ 
+-                if (script_data != null)
+-                {
+-                    File.WriteAllText(filename, Base64Decode(script_data));
+-                }
++                var script_name = query.Get ( "script_name" );
++                var script_data = query.Get ( "script_data" );
++                var callback    = query.Get ( "callback"    );
+ 
+-                if (callback != null)
+-                {
+-
+-                }
++                if ( script_name != null )
++                    path = Path.Combine ( path, script_name.ToString () );
+ 
++                if ( script_data != null )
++                    File.WriteAllText ( path, Base64Decode ( script_data ) );
+ 
++                if ( callback != null ) { /* ... */ }
+ 
+                 Task.Run(async () =>
+                 {
+-                    await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
++                    await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread ( async () =>
+                     {
+                         Settings.IsLoggedIn = false;
+-                        CredentialsService.DeleteCredentials();
+-                        NavigationPage page = new NavigationPage(new AclaraViewScripting(filename, callback, script_name));
+-                        MainPage = page;
+-                        await MainPage.Navigation.PopToRootAsync(true);
++                        credentialsService.DeleteCredentials ();
++
++                        MainPage = new NavigationPage(new AclaraViewScripting ( path, callback, script_name ) );
++                        await MainPage.Navigation.PopToRootAsync ( true );
+                     });
+                 });
+-
+             }
+         }
+ 
++        #region OnEvent
++
+         protected override void OnStart()
+         {
+             // https://appcenter.ms/users/ma.jimenez/apps/Aclara-MTU-Testing-App
+@@ -502,5 +349,6 @@ namespace aclara_meters
+         {
+         }
+ 
++        #endregion
+     }
+ }
+
+commit 3cd74d61594a180c0bb7b5203303892e2f54b203
+Author: h.foronda <h.foronda@DESKTOP-JONMIKE>
+Date:   Wed Dec 26 13:44:35 2018 +0100
+
+    modifications developed in macbook
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index a6d3949..e3255f1 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -4,10 +4,6 @@ using aclara_meters.view;
+ using nexus.protocols.ble;
+ using Xamarin.Forms;
+ using Xamarin.Forms.Xaml;
+-using Microsoft.AppCenter;
+-using Microsoft.AppCenter.Analytics;
+-using Microsoft.AppCenter.Crashes;
+-using Microsoft.AppCenter.Distribute;
+ using ble_library;
+ using System.Web;
+ using System.Collections.Generic;
+@@ -109,6 +105,8 @@ namespace aclara_meters
+             {
+                 config.setPlatform("Unknown");
+             }
++
++            Configuration.SetInstance ( config );
+         }
+ 
+ 
+@@ -148,6 +146,8 @@ namespace aclara_meters
+             ble_interface = new BleSerial(adapter);
+            
+ 
++            //ble_interface.Close ();
++
+ 
+             string data = "";
+ 
+@@ -490,7 +490,8 @@ namespace aclara_meters
+ 
+         protected override void OnStart()
+         {
+-            AppCenter.Start("ios=cb622ad5-e2ad-469d-b1cd-7461f140b2dc;" + "android=53abfbd5-4a3f-4eb2-9dea-c9f7810394be", typeof(Analytics), typeof(Crashes), typeof(Distribute) );
++            // https://appcenter.ms/users/ma.jimenez/apps/Aclara-MTU-Testing-App
++            //AppCenter.Start("ios=cb622ad5-e2ad-469d-b1cd-7461f140b2dc;" + "android=53abfbd5-4a3f-4eb2-9dea-c9f7810394be", typeof(Analytics), typeof(Crashes), typeof(Distribute) );
+         }
+ 
+         protected override void OnSleep()
+
+commit ef5f26587a72c98ab58c564ce944327c2442b3b0
+Author: h.foronda <h.foronda@DESKTOP-JONMIKE>
+Date:   Tue Dec 4 16:18:41 2018 +0100
+
+    Added Logger function into Login View Model #2
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 92d4c87..a6d3949 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -48,7 +48,7 @@ namespace aclara_meters
+         public string Version;
+         public string deviceId;
+ 
+-
++        public static Logger loggger;
+         public static Configuration config;
+ 
+         public FormsApp()
+@@ -94,6 +94,8 @@ namespace aclara_meters
+ 
+             config = new Configuration(xml_documents);
+ 
++            loggger = new Logger(config);
++
+             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+             {
+                 config.setPlatform("Android"); config.setAppName(AppName); config.setVersion(Version); config.setDeviceUUID(deviceId);
+
+commit 5894d4fb790c9efd68000dcb854639039631f777
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Nov 28 13:47:01 2018 +0100
+
+    Added external strings file
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index ae503a7..92d4c87 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -24,6 +24,7 @@ using System.Linq;
+ using System.Globalization;
+ using Xamarin.Essentials;
+ using Renci.SshNet.Sftp;
++using Plugin.Multilingual;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -174,7 +175,7 @@ namespace aclara_meters
+                 Console.WriteLine(e.StackTrace);
+             }
+ 
+-
++            AppResources.Culture = CrossMultilingual.Current.DeviceCultureInfo;
+ 
+ 
+ 
+
+commit 48c302450d4241eccd1f7ec7b6c189dbc3c39620
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Nov 27 16:22:26 2018 +0100
+
+    Deleted unused methods
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index c517155..ae503a7 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -498,257 +498,5 @@ namespace aclara_meters
+         {
+         }
+ 
+-
+-        private void RunSftpProtocol()
+-        {
+-            //string host = "192.168.1.24";
+-            //string password = "12345";
+-
+-            string host = "159.89.29.176";
+-            string username = "aclara";
+-            string password = "aclara1234";
+-
+-            //string pathRemoteFile = "/home/aclara/"; // prueba_archivo.xml";
+-
+-            //TODO: UUID MOVIL EN PATH REMOTE FILE
+-            string pathRemoteFile = "/home/aclara/logfiles/"+CrossDeviceInfo.Current.Id; // prueba_archivo.xml";
+-
+-
+-            // Path where the file should be saved once downloaded (locally)
+-            // string pathLocalFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "User.txt");
+-            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-            {
+-                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
+-            }
+-            //string name = "ReadMtuResult.xml";
+-            //string filename = Path.Combine(xml_documents, name);
+-            using (SftpClient sftp = new SftpClient(host, username, password))
+-            {
+-                try
+-                {
+-                    sftp.Connect();
+-                
+-                    //Console.WriteLine("Downloading {0}", pathRemoteFile);
+-                    /*--------------------------------------------------*/
+-                    // List all posible files in the documents directory 
+-                    // Check if file's lastwritetime is the lastest 
+-                    /*--------------------------------------------------*/
+-                    //List<SftpFile> ftp_array_files = new List<SftpFile>();
+-                    /*
+-                    // Remote FTP File directory
+-                    var ftp_files = sftp.ListDirectory(pathRemoteFile);
+-                    foreach (var file in ftp_files)
+-                    {
+-                        //Type filetype = file.GetType();
+-                        //DateTime dateUTC = file.LastWriteTimeUtc;
+-                        //DateTime date = file.LastWriteTime;
+-                        if(file.Name.Contains("Log"))
+-                        {
+-                            Console.WriteLine("SFtp file added to list : "+file.Name);
+-                            ftp_array_files.Add(file);
+-                        }
+-                    }
+-                    */
+-
+-                    #region Check if Local config files exist
+-
+-                    var filesLocal = System.IO.Directory.GetFiles(xml_documents);
+-
+-                    if (!filesLocal.Any())
+-                        return;
+-
+-                    string [] filesToCheck = { 
+-                                                "Alarm.xml", 
+-                                                "DemandConf.xml", 
+-                                                "Global.xml",
+-                                                "Interface.xml",
+-                                                "Meter.xml",
+-                                                "Mtu.xml"
+-                                             };
+-
+-                    int ContOfChecks = 0;
+-
+-                    foreach (var file in filesLocal)
+-                    {
+-                        foreach (string checkStr in filesToCheck)
+-                        {
+-                            string compareStr = checkStr;
+-                            compareStr = compareStr.Replace(xml_documents, "");
+-                            string fileStr = file.ToString();
+-                            fileStr = fileStr.Replace(xml_documents+"/", "");
+-
+-                            if (fileStr.Equals(compareStr))
+-                            {
+-                                ContOfChecks++;
+-                            } 
+-                        }  
+-                    }
+-
+-                    if(ContOfChecks < filesToCheck.Length)
+-                    {
+-                        return;
+-                    }
+-
+-                    #endregion
+-
+-                    //TODO
+-
+-                    List<string> saved_array_files = new List<string>();
+-                    try
+-                    {
+-                        var lines = File.ReadAllLines(Path.Combine(xml_documents, "SavedLogsList.txt"));
+-                        foreach (var line in lines)
+-                        {
+-                            saved_array_files.Add(line);
+-                        }
+-                    }
+-                    catch (Exception e)
+-                    {
+-                        Console.WriteLine(e.StackTrace);
+-                    }
+-                    List<FileInfo> local_array_files = new List<FileInfo>();
+-                    DirectoryInfo info = new DirectoryInfo(xml_documents);
+-                    FileInfo[] files = info.GetFiles().OrderBy(p => p.LastWriteTimeUtc).ToArray();
+-                    foreach (FileInfo file in files)
+-                    {
+-                        //Type filetype = file.GetType();
+-                        //DateTime dateUTC = file.LastWriteTimeUtc;
+-                        //DateTime date = file.LastWriteTime;
+-                        Console.WriteLine(file.Name + " Last Write time: " + file.LastWriteTimeUtc.ToString());
+-                        if (file.Name.Contains("Log.xml"))
+-                        {
+-                            bool enc = false;
+-                            foreach (string fileFtp in saved_array_files)
+-                            {
+-                                if (fileFtp.Equals(file.Name))
+-                                {
+-                                    enc = true;
+-                                }
+-                            }
+-
+-                            /*
+-                            foreach ( SftpFile fileFtp in ftp_array_files)
+-                            {
+-                                if(file.Name.Equals(fileFtp.Name))
+-                                {
+-                                    enc = true;
+-                                    if(!file.LastWriteTimeUtc.ToString().Equals( fileFtp.LastWriteTimeUtc.ToString() ) )
+-                                    {
+-                                        enc = false; //Replace the actual sftp file with the 'up to date' one...
+-                                    }
+-                                }
+-                            }
+-                            */
+-
+-                            if (!enc)
+-                            {
+-                                string dayfix = file.Name.Split('.')[0].Replace("Log", "");
+-                                DateTime date = DateTime.ParseExact(dayfix, "MMddyyyyHH", CultureInfo.InvariantCulture).ToUniversalTime();
+-                                //DateTime.UtcNow.ToString("MMddyyyyHH");
+-                                //DateTime.UtcNow.Ticks;
+-                                TimeSpan diff = date - DateTime.UtcNow;
+-                                int hours = (int)diff.TotalHours;
+-                                if (hours < 0)
+-                                {
+-                                    //Añadir para Subir por SFTP
+-                                    local_array_files.Add(file);
+-                                }
+-                            }
+-
+-                        }
+-                    }
+-
+-                    if (local_array_files.Count > 0)
+-                    {
+-                        foreach (FileInfo file in local_array_files)
+-                        {
+-                            var fileStream = new FileStream(file.FullName, FileMode.Open);
+-                            if (fileStream != null)
+-                            {
+-                                sftp.UploadFile(fileStream, Path.Combine(pathRemoteFile, file.Name), null);
+-                            }
+-                            long cont = fileStream.Length;
+-                            fileStream.Close();
+-                            File.Delete(file.FullName);
+-                            // TODO: MUST ----------->File.Delete(file.FullName);
+-                        }
+-                    }
+-                    try
+-                    {
+-                        using (TextWriter tw = new StreamWriter(Path.Combine(xml_documents, "SavedLogsList.txt")))
+-                        {
+-                            foreach (string fileFtp in saved_array_files)
+-                            {
+-                                tw.WriteLine(fileFtp);
+-                            }
+-                            foreach (FileInfo s in local_array_files)
+-                                tw.WriteLine(s.Name);
+-                        }
+-                    }
+-                    catch (Exception e)
+-                    {
+-                        Console.WriteLine(e.StackTrace);
+-                    }
+-                    //System.IO.File.WriteAllLines("SavedLists.txt", local_array_files);
+-                    // Input
+-                    /*
+-                    using (TextWriter tw = new StreamWriter("SavedLogsList.txt"))
+-                    {
+-                        foreach (String s in Lists.verbList)
+-                            tw.WriteLine(s);
+-                    }
+-                    */
+-                    /*
+-                    var files = sftp.ListDirectory(pathRemoteFile);
+-                    foreach (var file in files)
+-                    {
+-                        Type filetype = file.GetType();
+-                        DateTime dateUTC = file.LastWriteTimeUtc;
+-                        DateTime date = file.LastWriteTime;
+-                        Console.WriteLine(file.Name);
+-                    }
+-                    */
+-                    /*
+-                    var fileStream = new FileStream(filename, FileMode.Open);
+-                    if (fileStream != null)
+-                    {
+-                        sftp.UploadFile(fileStream, Path.Combine(pathRemoteFile, name ), null);
+-                    }
+-                    long cont = fileStream.Length;
+-                    fileStream.Close();
+-                   
+-                    File.Delete(filename);
+-                    */
+-                    /**
+-                    using (Stream fileStreamUpload = File.OpenWrite(filename))
+-                    {
+-                        fileStreamUpload.SetLength(0);
+-                        fileStreamUpload.Position = 0;
+-                        sftp.DownloadFile(pathRemoteFile, fileStreamUpload);
+-                        if(fileStreamUpload.Length == cont){
+-                          
+-                        }
+-                        //sftp.DownloadFile(pathRemoteFile, fileStreamUpload);
+-                    }
+-                    **/
+-                    //   sftp.Disconnect();
+-                    /*
+-                    using (Stream fileStream = File.OpenWrite(pathLocalFile))
+-                    {
+-                        sftp.DownloadFile(pathRemoteFile, fileStream);
+-                    }
+-                    */
+-                    sftp.Disconnect();
+-                }
+-                catch (Exception e)
+-                {
+-                    Console.WriteLine("An exception has been caught " + e.ToString());
+-                }
+-            }
+-        }
+-    
+-
+-
+     }
+ }
+
+commit 7a86e11a4191765a69f72eb4af967b0f53ad5608
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Nov 27 16:02:22 2018 +0100
+
+    New SFTP lifecycle implemented
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 1d23af1..c517155 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -22,12 +22,23 @@ using System.Threading.Tasks;
+ using Renci.SshNet;
+ using System.Linq;
+ using System.Globalization;
++using Xamarin.Essentials;
++using Renci.SshNet.Sftp;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+ {
+     public partial class FormsApp : Application
+     {
++        #region Initial FTP - Default Config data
++
++        string host = "159.89.29.176";
++        string username = "aclara";
++        string password = "aclara1234";
++        string pathRemoteFile = "/home/aclara";
++
++        #endregion
++
+         public static string AppName { get { return "Aclara MTU Programmer"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
+         public static BleSerial ble_interface;
+@@ -163,22 +174,247 @@ namespace aclara_meters
+                 Console.WriteLine(e.StackTrace);
+             }
+ 
+-            LoadConfiguration();
+ 
+-            #region SFTP Protocol
+ 
+-            RunSftpProtocol();
++
++
++      #region Init Configuration Files
++
++            if ( CheckForLocalFiles() )
++            {
++                ItJustWorks(dialogs, data);
++
++            }else{
++                
++                DownloadConfigurationFiles(dialogs, data);
++            }
++
++      #endregion
++
++        }
++
++
++
++    #region Init Configuration Files Implementation
++
++        private async void DownloadConfigurationFiles(IUserDialogs dialogs, string data)
++        {
++            
++            #region Check the Network channels
++
++            if (CheckIfNetworkIsAvailable())
++            {
++                #region Download all the data
++
++                if( DownloadInitialConfigFiles() )
++                {
++                    ItJustWorks(dialogs, data);
++                }else{
++                    
++                    #region Error Dialog Must be shown on downloading
++
++                    MainPage = new NavigationPage(new ErrorInitView("Error Downloading files"));
++
++                    #endregion
++                }
++
++                #endregion
++
++            }
++            else
++            {
++                #region Error Dialog Must be shown on Loading
++
++                MainPage = new NavigationPage(new ErrorInitView());
++
++                #endregion
++            }
+ 
+             #endregion
+ 
+-            //Cargar la pantalla principal
++        }
++
++        #region Initial Config Files Download from SFTP
++
++        private bool DownloadInitialConfigFiles()
++        {
++            try
++            {
++                using (SftpClient sftp = new SftpClient(host, username, password))
++                {
++                    try
++                    {
++                        sftp.Connect();
++
++                   
++                        /*--------------------------------------------------*/
++                        // List all posible files in the documents directory 
++                        // Check if file's lastwritetime is the lastest 
++                        /*--------------------------------------------------*/
++                        List<SftpFile> ftp_array_files = new List<SftpFile>();
++
++                        // Remote FTP File directory
++                        var ftp_files = sftp.ListDirectory(pathRemoteFile);
++                        foreach (var file in ftp_files)
++                        {
++
++                            if(file.Name.Contains(".xml")){
++                                ftp_array_files.Add(file);
++                            }
++                           
++
++                        }
++
++                        var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++
++                        if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
++                        {
++                            xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
++                        }
++
++                        foreach (var file in ftp_array_files)
++                        {
++                            string remoteFileName = file.Name;
++                         
++
++                            using (Stream file1 = File.OpenWrite( Path.Combine (xml_documents, remoteFileName) ))
++                            {
++                                sftp.DownloadFile( Path.Combine (pathRemoteFile, remoteFileName ), file1);
++                            }
++
++                        }
++
++                       
++                        sftp.Disconnect();
++
++                        return true;
++                    }
++                    catch (Exception e)
++                    {
++                        Console.WriteLine("An exception has been caught " + e.ToString());
++                    }
++
++                    return false;
++                }
++            }
++            catch (Exception e)
++            {
++                Console.WriteLine("An exception has been caught " + e.ToString());
++            }
++
++            return false;
++        }
++
++        #endregion
++
++        private bool CheckIfNetworkIsAvailable()
++        {
++            var current = Connectivity.NetworkAccess;
++
++            var profiles = Connectivity.Profiles;
++
++            if (profiles.Contains(ConnectionProfile.WiFi))
++            {
++                if (current == NetworkAccess.Internet)
++                {
++                    return true;
++                    // Connection to internet is available
++                }
++            }else 
++            if (profiles.Contains(ConnectionProfile.Cellular))
++            {
++                if (current == NetworkAccess.Internet)
++                {
++                    return true;
++                    // Connection to internet is available
++                }
++            }
++
++            return false;
++        }
++
++
++        #region Testing Purposes - Not final - Control the connectivity to network in Realtime
++
++        /*
++        public ConnectivityTest()
++        {
++            // Register for connectivity changes, be sure to unsubscribe when finished
++            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
++        }
++
++        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
++        {
++            var access = e.NetworkAccess;
++            var profiles = e.Profiles;
++        }
++        */
++        #endregion
++
++        private void ItJustWorks(IUserDialogs dialogs, string data)
++        {
++
++            LoadConfiguration();
++            //Load Login View
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
+-         
+         }
+ 
++        #region Check if Local config files exists
+ 
+-       
++        private bool CheckForLocalFiles()
++        {
++            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++          
++            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
++            {
++                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
++            }
++
++            var filesLocal = System.IO.Directory.GetFiles(xml_documents);
++
++            if (!filesLocal.Any())
++                return false;
+ 
++            string[] filesToCheck = {
++                                    "Alarm.xml",
++                                    "DemandConf.xml",
++                                    "Global.xml",
++                                    "Interface.xml",
++                                    "Meter.xml",
++                                    "Mtu.xml"
++                                 };
++
++            int ContOfChecks = 0;
++
++            foreach (var file in filesLocal)
++            {
++                foreach (string checkStr in filesToCheck)
++                {
++                    string compareStr = checkStr;
++                    compareStr = compareStr.Replace(xml_documents, "");
++
++                    string fileStr = file.ToString();
++                    fileStr = fileStr.Replace(xml_documents + "/", "");
++                    
++                    if (fileStr.Equals(compareStr))
++                    {
++                        ContOfChecks++;
++                    }
++                }
++            }
++
++            if (ContOfChecks < filesToCheck.Length)
++            {
++                return false;
++            }
++
++            return true;
++        }
++
++        #endregion
++
++
++    #endregion
+ 
+         public static string Base64Decode(string base64EncodedData)
+         {
+@@ -265,10 +501,19 @@ namespace aclara_meters
+ 
+         private void RunSftpProtocol()
+         {
+-            string host = "192.168.1.24";
++            //string host = "192.168.1.24";
++            //string password = "12345";
++
++            string host = "159.89.29.176";
+             string username = "aclara";
+-            string password = "12345";
+-            string pathRemoteFile = "/home/aclara/"; // prueba_archivo.xml";
++            string password = "aclara1234";
++
++            //string pathRemoteFile = "/home/aclara/"; // prueba_archivo.xml";
++
++            //TODO: UUID MOVIL EN PATH REMOTE FILE
++            string pathRemoteFile = "/home/aclara/logfiles/"+CrossDeviceInfo.Current.Id; // prueba_archivo.xml";
++
++
+             // Path where the file should be saved once downloaded (locally)
+             // string pathLocalFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "User.txt");
+             var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+@@ -283,6 +528,7 @@ namespace aclara_meters
+                 try
+                 {
+                     sftp.Connect();
++                
+                     //Console.WriteLine("Downloading {0}", pathRemoteFile);
+                     /*--------------------------------------------------*/
+                     // List all posible files in the documents directory 
+@@ -304,6 +550,50 @@ namespace aclara_meters
+                         }
+                     }
+                     */
++
++                    #region Check if Local config files exist
++
++                    var filesLocal = System.IO.Directory.GetFiles(xml_documents);
++
++                    if (!filesLocal.Any())
++                        return;
++
++                    string [] filesToCheck = { 
++                                                "Alarm.xml", 
++                                                "DemandConf.xml", 
++                                                "Global.xml",
++                                                "Interface.xml",
++                                                "Meter.xml",
++                                                "Mtu.xml"
++                                             };
++
++                    int ContOfChecks = 0;
++
++                    foreach (var file in filesLocal)
++                    {
++                        foreach (string checkStr in filesToCheck)
++                        {
++                            string compareStr = checkStr;
++                            compareStr = compareStr.Replace(xml_documents, "");
++                            string fileStr = file.ToString();
++                            fileStr = fileStr.Replace(xml_documents+"/", "");
++
++                            if (fileStr.Equals(compareStr))
++                            {
++                                ContOfChecks++;
++                            } 
++                        }  
++                    }
++
++                    if(ContOfChecks < filesToCheck.Length)
++                    {
++                        return;
++                    }
++
++                    #endregion
++
++                    //TODO
++
+                     List<string> saved_array_files = new List<string>();
+                     try
+                     {
+@@ -336,6 +626,7 @@ namespace aclara_meters
+                                     enc = true;
+                                 }
+                             }
++
+                             /*
+                             foreach ( SftpFile fileFtp in ftp_array_files)
+                             {
+@@ -349,6 +640,7 @@ namespace aclara_meters
+                                 }
+                             }
+                             */
++
+                             if (!enc)
+                             {
+                                 string dayfix = file.Name.Split('.')[0].Replace("Log", "");
+@@ -363,8 +655,10 @@ namespace aclara_meters
+                                     local_array_files.Add(file);
+                                 }
+                             }
++
+                         }
+                     }
++
+                     if (local_array_files.Count > 0)
+                     {
+                         foreach (FileInfo file in local_array_files)
+
+commit ec8a579d0a595259e82c0b20e186429d1357cf4f
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Nov 26 10:23:23 2018 +0100
+
+    Added changes to the SFTP behaviour
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 367ba4e..1d23af1 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -20,6 +20,8 @@ using MTUComm;
+ using aclara_meters.Helpers;
+ using System.Threading.Tasks;
+ using Renci.SshNet;
++using System.Linq;
++using System.Globalization;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -160,9 +162,15 @@ namespace aclara_meters
+             {
+                 Console.WriteLine(e.StackTrace);
+             }
+-           
++
+             LoadConfiguration();
+ 
++            #region SFTP Protocol
++
++            RunSftpProtocol();
++
++            #endregion
++
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
+          
+@@ -253,5 +261,200 @@ namespace aclara_meters
+         protected override void OnResume()
+         {
+         }
++
++
++        private void RunSftpProtocol()
++        {
++            string host = "192.168.1.24";
++            string username = "aclara";
++            string password = "12345";
++            string pathRemoteFile = "/home/aclara/"; // prueba_archivo.xml";
++            // Path where the file should be saved once downloaded (locally)
++            // string pathLocalFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "User.txt");
++            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
++            {
++                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
++            }
++            //string name = "ReadMtuResult.xml";
++            //string filename = Path.Combine(xml_documents, name);
++            using (SftpClient sftp = new SftpClient(host, username, password))
++            {
++                try
++                {
++                    sftp.Connect();
++                    //Console.WriteLine("Downloading {0}", pathRemoteFile);
++                    /*--------------------------------------------------*/
++                    // List all posible files in the documents directory 
++                    // Check if file's lastwritetime is the lastest 
++                    /*--------------------------------------------------*/
++                    //List<SftpFile> ftp_array_files = new List<SftpFile>();
++                    /*
++                    // Remote FTP File directory
++                    var ftp_files = sftp.ListDirectory(pathRemoteFile);
++                    foreach (var file in ftp_files)
++                    {
++                        //Type filetype = file.GetType();
++                        //DateTime dateUTC = file.LastWriteTimeUtc;
++                        //DateTime date = file.LastWriteTime;
++                        if(file.Name.Contains("Log"))
++                        {
++                            Console.WriteLine("SFtp file added to list : "+file.Name);
++                            ftp_array_files.Add(file);
++                        }
++                    }
++                    */
++                    List<string> saved_array_files = new List<string>();
++                    try
++                    {
++                        var lines = File.ReadAllLines(Path.Combine(xml_documents, "SavedLogsList.txt"));
++                        foreach (var line in lines)
++                        {
++                            saved_array_files.Add(line);
++                        }
++                    }
++                    catch (Exception e)
++                    {
++                        Console.WriteLine(e.StackTrace);
++                    }
++                    List<FileInfo> local_array_files = new List<FileInfo>();
++                    DirectoryInfo info = new DirectoryInfo(xml_documents);
++                    FileInfo[] files = info.GetFiles().OrderBy(p => p.LastWriteTimeUtc).ToArray();
++                    foreach (FileInfo file in files)
++                    {
++                        //Type filetype = file.GetType();
++                        //DateTime dateUTC = file.LastWriteTimeUtc;
++                        //DateTime date = file.LastWriteTime;
++                        Console.WriteLine(file.Name + " Last Write time: " + file.LastWriteTimeUtc.ToString());
++                        if (file.Name.Contains("Log.xml"))
++                        {
++                            bool enc = false;
++                            foreach (string fileFtp in saved_array_files)
++                            {
++                                if (fileFtp.Equals(file.Name))
++                                {
++                                    enc = true;
++                                }
++                            }
++                            /*
++                            foreach ( SftpFile fileFtp in ftp_array_files)
++                            {
++                                if(file.Name.Equals(fileFtp.Name))
++                                {
++                                    enc = true;
++                                    if(!file.LastWriteTimeUtc.ToString().Equals( fileFtp.LastWriteTimeUtc.ToString() ) )
++                                    {
++                                        enc = false; //Replace the actual sftp file with the 'up to date' one...
++                                    }
++                                }
++                            }
++                            */
++                            if (!enc)
++                            {
++                                string dayfix = file.Name.Split('.')[0].Replace("Log", "");
++                                DateTime date = DateTime.ParseExact(dayfix, "MMddyyyyHH", CultureInfo.InvariantCulture).ToUniversalTime();
++                                //DateTime.UtcNow.ToString("MMddyyyyHH");
++                                //DateTime.UtcNow.Ticks;
++                                TimeSpan diff = date - DateTime.UtcNow;
++                                int hours = (int)diff.TotalHours;
++                                if (hours < 0)
++                                {
++                                    //Añadir para Subir por SFTP
++                                    local_array_files.Add(file);
++                                }
++                            }
++                        }
++                    }
++                    if (local_array_files.Count > 0)
++                    {
++                        foreach (FileInfo file in local_array_files)
++                        {
++                            var fileStream = new FileStream(file.FullName, FileMode.Open);
++                            if (fileStream != null)
++                            {
++                                sftp.UploadFile(fileStream, Path.Combine(pathRemoteFile, file.Name), null);
++                            }
++                            long cont = fileStream.Length;
++                            fileStream.Close();
++                            File.Delete(file.FullName);
++                            // TODO: MUST ----------->File.Delete(file.FullName);
++                        }
++                    }
++                    try
++                    {
++                        using (TextWriter tw = new StreamWriter(Path.Combine(xml_documents, "SavedLogsList.txt")))
++                        {
++                            foreach (string fileFtp in saved_array_files)
++                            {
++                                tw.WriteLine(fileFtp);
++                            }
++                            foreach (FileInfo s in local_array_files)
++                                tw.WriteLine(s.Name);
++                        }
++                    }
++                    catch (Exception e)
++                    {
++                        Console.WriteLine(e.StackTrace);
++                    }
++                    //System.IO.File.WriteAllLines("SavedLists.txt", local_array_files);
++                    // Input
++                    /*
++                    using (TextWriter tw = new StreamWriter("SavedLogsList.txt"))
++                    {
++                        foreach (String s in Lists.verbList)
++                            tw.WriteLine(s);
++                    }
++                    */
++                    /*
++                    var files = sftp.ListDirectory(pathRemoteFile);
++                    foreach (var file in files)
++                    {
++                        Type filetype = file.GetType();
++                        DateTime dateUTC = file.LastWriteTimeUtc;
++                        DateTime date = file.LastWriteTime;
++                        Console.WriteLine(file.Name);
++                    }
++                    */
++                    /*
++                    var fileStream = new FileStream(filename, FileMode.Open);
++                    if (fileStream != null)
++                    {
++                        sftp.UploadFile(fileStream, Path.Combine(pathRemoteFile, name ), null);
++                    }
++                    long cont = fileStream.Length;
++                    fileStream.Close();
++                   
++                    File.Delete(filename);
++                    */
++                    /**
++                    using (Stream fileStreamUpload = File.OpenWrite(filename))
++                    {
++                        fileStreamUpload.SetLength(0);
++                        fileStreamUpload.Position = 0;
++                        sftp.DownloadFile(pathRemoteFile, fileStreamUpload);
++                        if(fileStreamUpload.Length == cont){
++                          
++                        }
++                        //sftp.DownloadFile(pathRemoteFile, fileStreamUpload);
++                    }
++                    **/
++                    //   sftp.Disconnect();
++                    /*
++                    using (Stream fileStream = File.OpenWrite(pathLocalFile))
++                    {
++                        sftp.DownloadFile(pathRemoteFile, fileStream);
++                    }
++                    */
++                    sftp.Disconnect();
++                }
++                catch (Exception e)
++                {
++                    Console.WriteLine("An exception has been caught " + e.ToString());
++                }
++            }
++        }
++    
++
++
+     }
+ }
+
+commit 412ccaf9b6fb90d6e1fc069b5513ba50a1521a1b
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Nov 20 11:00:08 2018 +0100
+
+    Added ftp files send function. Local files are deleted when upload is completed. Fixed Read MTU UI
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index c11e147..367ba4e 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -19,6 +19,7 @@ using Plugin.DeviceInfo;
+ using MTUComm;
+ using aclara_meters.Helpers;
+ using System.Threading.Tasks;
++using Renci.SshNet;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -164,9 +165,12 @@ namespace aclara_meters
+ 
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
++         
++        }
+ 
+ 
+-        }
++       
++
+ 
+         public static string Base64Decode(string base64EncodedData)
+         {
+@@ -220,6 +224,8 @@ namespace aclara_meters
+ 
+                 }
+ 
++
++
+                 Task.Run(async () =>
+                 {
+                     await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+
+commit 15065d2d76265b94c7ea0523b2e0199d5ef0a0bc
+Merge: 9163fb8 bed1dc9
+Author: Martxel <m.lasa@bizintekinnova.com>
+Date:   Tue Nov 20 08:36:02 2018 +0100
+
+    Merge branch 'feature/custom_views_addmtu' into develop
+
+commit f4095535f15281d9ce1f593f9200a4d0b8211992
+Author: Martxel <m.lasa@bizintekinnova.com>
+Date:   Fri Nov 16 14:01:12 2018 +0100
+
+    Work In Progress commit.
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 123142f..2dfd8d8 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -125,6 +125,7 @@ namespace aclara_meters
+ 
+             try
+             {
++
+                 base64CertificateString = listaDatos[2].Replace("cert_file: ", "");
+                 byte[] bytes = Convert.FromBase64String(base64CertificateString);
+                 X509Certificate2 x509certificate = new X509Certificate2(bytes);
+
+commit ab2c2aacc118e4cc9e74ec4af536b38e30617dd4
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Nov 14 18:10:14 2018 +0100
+
+    Second scripting integration approach
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 2aa2712..21b8743 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -179,7 +179,7 @@ namespace aclara_meters
+             return System.Convert.ToBase64String(plainTextBytes);
+         }
+ 
+-        public async void HandleUrl(Uri url)
++        public void HandleUrl(Uri url)
+         {
+             if (url == null)
+             {
+@@ -204,7 +204,7 @@ namespace aclara_meters
+                 var callback = query.Get("callback");
+ 
+ 
+-                if(script_name!=null)
++                if (script_name != null)
+                 {
+                     filename = Path.Combine(xml_documents, script_name.ToString());
+                 }
+@@ -216,9 +216,9 @@ namespace aclara_meters
+ 
+                 if (callback != null)
+                 {
+-                  
++
+                 }
+-            
++
+                 Task.Run(async () =>
+                 {
+                     await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+
+commit 67e61a7c7a3bb2edbf756130d869624ced2c4a05
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Nov 14 17:11:11 2018 +0100
+
+    First scripting integration approach
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 123142f..2aa2712 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -17,6 +17,8 @@ using System.Security.Cryptography.X509Certificates;
+ using System.Security.Cryptography;
+ using Plugin.DeviceInfo;
+ using MTUComm;
++using aclara_meters.Helpers;
++using System.Threading.Tasks;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -68,27 +70,50 @@ namespace aclara_meters
+ 
+         private void LoadConfiguration()
+         {
+-            config = Configuration.GetInstance();
++            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+ 
+             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+             {
+-                config.setPlatform("Android");
+-                config.setAppName(AppName);
+-                config.setVersion(Version);
+-                config.setDeviceUUID(deviceId);
+-
+-            }else
+-        
+-            if(Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
++                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
++            }
++
++            config = new Configuration(xml_documents);
++
++            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+             {
+-                config.setPlatform("iOS"); 
+-                config.setAppName(AppName);
+-                config.setVersion(Version);
+-                config.setDeviceUUID(deviceId);
+-            }else{
+-                config.setPlatform("Unknown"); 
++                config.setPlatform("Android"); config.setAppName(AppName); config.setVersion(Version); config.setDeviceUUID(deviceId);
++
++            }
++            else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
++            {
++                config.setPlatform("iOS"); config.setAppName(AppName); config.setVersion(Version); config.setDeviceUUID(deviceId);
++            }
++            else
++            {
++                config.setPlatform("Unknown");
+             }
+-            
++        }
++
++
++        /*--------------------------------------------------*/
++        /*      Extensions Requests are handled here        */
++
++        public async void HandleUrl(string url, string path)
++        {
++            Uri newUri = null;
++
++            try{
++                newUri = new Uri(url);
++
++                HandleUrl(newUri);
++            }catch (Exception j){
++                Console.WriteLine(j.StackTrace);
++            }
++
++           
++
++
++          
+         }
+ 
+         public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs, List<string> listaDatos, string AppVersion)
+@@ -142,85 +167,69 @@ namespace aclara_meters
+ 
+         }
+ 
++        public static string Base64Decode(string base64EncodedData)
++        {
++            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
++            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
++        }
++
++        public static string Base64Encode(string plainText)
++        {
++            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
++            return System.Convert.ToBase64String(plainTextBytes);
++        }
+ 
+         public async void HandleUrl(Uri url)
+         {
+             if (url == null)
+             {
+-                
++
+             }
+             else
+             {
+-                string url_str = url.LocalPath;
+-                string url_str2 = url.AbsolutePath;
+-                string url_str3 = url.Scheme;
++                var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++                var filename = "";
+ 
+-            
+-                var response = await Application.Current.MainPage.DisplayAlert("Alert", "Work in Progress deep linking", "ok","cancel");  
+-  
+-                if (response)  
++                if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+                 {
++                    xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
++                }
+ 
+-					String decode1 = System.Web.HttpUtility.UrlDecode(url.ToString());
+-                    var uri = new Uri(decode1);
+-                    var query = HttpUtility.ParseQueryString(uri.Query);
+-
+-                  
+-                    try
+-                    {
+-                        var var1 = query.Get("script_path");
+-                        if (var1 != null)
+-                        {
+-                            Console.WriteLine("Var1:" + var1.ToString());
+-
+-                            var response3 = await Application.Current.MainPage.DisplayAlert("Alert", "script_path: " + var1.ToString(), "ok", "cancel");
+-
+-
+-                            List<string> listaObjetos = new List<string>();
+-
+-                            XDocument doc = XDocument.Parse(var1);
+-
+-                            foreach (var item in doc.Descendants("note"))  
+-                            {  
+-                                string to = item.Element("to").Value.ToString();  
+-                                string from = item.Element("from").Value.ToString();  
+-                                string heading = item.Element("heading").Value.ToString();  
+-                                string body = item.Element("body").Value.ToString();  
+-                                listaObjetos.Add("To: "+to+" From: "+from+" Heading: "+heading+" Body: "+body);  
+-                            }  
++                //string decode1 = System.Web.HttpUtility.UrlDecode(url.ToString());
++                //var uri = new Uri(decode1);
++                var query = HttpUtility.ParseQueryString(url.Query);
+ 
+-                            await Application.Current.MainPage.DisplayAlert("Objetos XML", listaObjetos[0], "ok", "cancel");
++                var script_name = query.Get("script_name");
++                var script_data = query.Get("script_data");
++                var callback = query.Get("callback");
+ 
+-                        }
+-                        var var2 = query.Get("callback");
+-                        if (var2 != null)
+-                        {
+-                            Console.WriteLine("Var2:" + var2.ToString());
+-                            var response2 = await Application.Current.MainPage.DisplayAlert("Alert", "callback: " + var2.ToString(), "ok", "cancel");
+-                            /**/
+-                            var uri2 = new Uri(var2);
+-                            var query2 = HttpUtility.ParseQueryString(uri2.Query);
+-                            var var12 = query2.Get("param");
+-                            String cabecera = var2.Replace(var12, "");
+-                            String datos = System.Web.HttpUtility.UrlEncode(var12);
+-                            Xamarin.Forms.Device.OpenUri(new Uri(cabecera + datos));
+ 
+-                        }
+-                       
++                if(script_name!=null)
++                {
++                    filename = Path.Combine(xml_documents, script_name.ToString());
++                }
+ 
++                if (script_data != null)
++                {
++                    File.WriteAllText(filename, Base64Decode(script_data));
++                }
+ 
+-                    }catch(Exception e)
++                if (callback != null)
++                {
++                  
++                }
++            
++                Task.Run(async () =>
++                {
++                    await Task.Delay(1000); Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+                     {
+-                        Console.WriteLine(e.StackTrace);
+-                    }
+-
+-                }  
+-      
+-                else  
+-                {  
+-                   //user click cancel  
+-                
+-                }  
++                        Settings.IsLoggedIn = false;
++                        CredentialsService.DeleteCredentials();
++                        NavigationPage page = new NavigationPage(new AclaraViewScripting(filename, callback, script_name));
++                        MainPage = page;
++                        await MainPage.Navigation.PopToRootAsync(true);
++                    });
++                });
+ 
+             }
+         }
+
+commit 790b10b98c4c4d703ab6eb84efab5930380ddf36
+Author: Martxel <m.lasa@bizintekinnova.com>
+Date:   Tue Nov 6 16:01:00 2018 +0100
+
+    Convert Configuration to singleton so base path is accessible from everywhere.
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 17e9489..123142f 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -68,16 +68,7 @@ namespace aclara_meters
+ 
+         private void LoadConfiguration()
+         {
+-
+-            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-
+-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+-            {
+-                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
+-            }
+-
+-
+-            config = new Configuration(xml_documents);
++            config = Configuration.GetInstance();
+ 
+             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+             {
+
+commit d3342a2ebdeeabab11fe4c050274121e91944776
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Oct 22 12:24:37 2018 +0200
+
+    Changed Configuration files
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index cfeee83..17e9489 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -16,18 +16,23 @@ using System.IO;
+ using System.Security.Cryptography.X509Certificates;
+ using System.Security.Cryptography;
+ using Plugin.DeviceInfo;
++using MTUComm;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+ {
+     public partial class FormsApp : Application
+     {
+-        public static string AppName { get { return "StoreAccountInfoApp"; } }
++        public static string AppName { get { return "Aclara MTU Programmer"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
+         public static BleSerial ble_interface;
+         //public static Lexi.Lexi lexi;
+ 
+         public string Version;
++        public string deviceId;
++
++
++        public static Configuration config;
+ 
+         public FormsApp()
+         {
+@@ -55,13 +60,45 @@ namespace aclara_meters
+             // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
+             //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
+ 
+-
++            LoadConfiguration();
+ 
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+         }
+ 
++        private void LoadConfiguration()
++        {
++
++            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++
++            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
++            {
++                xml_documents = xml_documents.Replace("/data/user/0/", "/storage/emulated/0/Android/data/");
++            }
++
++
++            config = new Configuration(xml_documents);
+ 
++            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
++            {
++                config.setPlatform("Android");
++                config.setAppName(AppName);
++                config.setVersion(Version);
++                config.setDeviceUUID(deviceId);
++
++            }else
++        
++            if(Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
++            {
++                config.setPlatform("iOS"); 
++                config.setAppName(AppName);
++                config.setVersion(Version);
++                config.setDeviceUUID(deviceId);
++            }else{
++                config.setPlatform("Unknown"); 
++            }
++            
++        }
+ 
+         public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs, List<string> listaDatos, string AppVersion)
+         {
+@@ -69,7 +106,7 @@ namespace aclara_meters
+ 
+             Version = AppVersion;
+ 
+-            var deviceId = CrossDeviceInfo.Current.Id;
++            deviceId = CrossDeviceInfo.Current.Id;
+ 
+             //Gestor de cuentas
+             CredentialsService = new CredentialsService();
+@@ -106,7 +143,7 @@ namespace aclara_meters
+                 Console.WriteLine(e.StackTrace);
+             }
+            
+-
++            LoadConfiguration();
+ 
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
+
+commit 56e78aa4c21bad88bf1bc28538d3982a9f2128af
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Oct 22 09:56:08 2018 +0200
+
+    Get UUID Device & Bundle Version - iOS + Android - Save them to App Vars
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index da87604..cfeee83 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -67,7 +67,7 @@ namespace aclara_meters
+         {
+             InitializeComponent();
+ 
+-            AppVersion = Version;
++            Version = AppVersion;
+ 
+             var deviceId = CrossDeviceInfo.Current.Id;
+ 
+@@ -93,13 +93,19 @@ namespace aclara_meters
+               
+             }
+ 
+-           
++            string base64CertificateString = "";
+ 
+-            string base64CertificateString = listaDatos[2].Replace("cert_file: ", "");
+-   
+-            byte[] bytes = Convert.FromBase64String(base64CertificateString);
+-            X509Certificate2 x509certificate = new X509Certificate2(bytes);
++            try
++            {
++                base64CertificateString = listaDatos[2].Replace("cert_file: ", "");
++                byte[] bytes = Convert.FromBase64String(base64CertificateString);
++                X509Certificate2 x509certificate = new X509Certificate2(bytes);
+ 
++            }catch (Exception e)
++            {
++                Console.WriteLine(e.StackTrace);
++            }
++           
+ 
+ 
+             //Cargar la pantalla principal
+
+commit f7de5a1185ee82668f2b230d877525279b144097
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Fri Oct 19 15:35:16 2018 +0200
+
+    App Version, Device UUID, Certificates..
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 79f8e11..da87604 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -15,6 +15,7 @@ using System.Xml.Linq;
+ using System.IO;
+ using System.Security.Cryptography.X509Certificates;
+ using System.Security.Cryptography;
++using Plugin.DeviceInfo;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -26,6 +27,8 @@ namespace aclara_meters
+         public static BleSerial ble_interface;
+         //public static Lexi.Lexi lexi;
+ 
++        public string Version;
++
+         public FormsApp()
+         {
+             InitializeComponent();
+@@ -60,10 +63,14 @@ namespace aclara_meters
+ 
+ 
+ 
+-        public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs, List<string> listaDatos)
++        public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs, List<string> listaDatos, string AppVersion)
+         {
+             InitializeComponent();
+ 
++            AppVersion = Version;
++
++            var deviceId = CrossDeviceInfo.Current.Id;
++
+             //Gestor de cuentas
+             CredentialsService = new CredentialsService();
+ 
+
+commit 518a28aca3b7847abbfdc8c877425ea6b6cb4f71
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Fri Oct 19 12:00:24 2018 +0200
+
+    Create certificate from Base64 string
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 6c64601..79f8e11 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -86,6 +86,12 @@ namespace aclara_meters
+               
+             }
+ 
++           
++
++            string base64CertificateString = listaDatos[2].Replace("cert_file: ", "");
++   
++            byte[] bytes = Convert.FromBase64String(base64CertificateString);
++            X509Certificate2 x509certificate = new X509Certificate2(bytes);
+ 
+ 
+ 
+
+commit cb5aa0651f9412066e55d8ad03e29df7f24b8e88
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Fri Oct 19 10:40:49 2018 +0200
+
+    Custom parameter fields are being received from Intune MDM
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 2b2d3cc..6c64601 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -52,11 +52,8 @@ namespace aclara_meters
+             // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
+             //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
+ 
+-            // XML FILE FTP CREATION
+-            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-            var init_file = Path.Combine(xml_documents, "init");
+-            File.WriteAllText(init_file, "Init app folder creation");
+-   
++
++
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+         }
+@@ -73,10 +70,7 @@ namespace aclara_meters
+             //Inicializar libreria personalizada
+             ble_interface = new BleSerial(adapter);
+            
+-            // XML FILE FTP CREATION
+-            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+-            var init_file = Path.Combine(xml_documents, "init");
+-            File.WriteAllText(init_file, "Init app folder creation");
++
+ 
+             string data = "";
+ 
+@@ -86,12 +80,15 @@ namespace aclara_meters
+  
+                 for (int i = 0; i < listaDatos.Count; i++)
+                 {
+-                    data = data + listaDatos[i] + "/n";
++                    data = data + listaDatos[i] + "\r\n";
+                 }
+ 
+               
+             }
+ 
++
++
++
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
+ 
+
+commit 9e46d41fe6b582b90329b3ef723e4cf73e9f42eb
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Oct 17 14:21:48 2018 +0200
+
+    TODO: intune config stuff. New forms fields and conditions added
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 7258c1c..2b2d3cc 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -52,12 +52,53 @@ namespace aclara_meters
+             // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
+             //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
+ 
+-         
+-
++            // XML FILE FTP CREATION
++            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++            var init_file = Path.Combine(xml_documents, "init");
++            File.WriteAllText(init_file, "Init app folder creation");
++   
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+         }
+ 
++
++
++        public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs, List<string> listaDatos)
++        {
++            InitializeComponent();
++
++            //Gestor de cuentas
++            CredentialsService = new CredentialsService();
++
++            //Inicializar libreria personalizada
++            ble_interface = new BleSerial(adapter);
++           
++            // XML FILE FTP CREATION
++            var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++            var init_file = Path.Combine(xml_documents, "init");
++            File.WriteAllText(init_file, "Init app folder creation");
++
++            string data = "";
++
++            if (listaDatos.Count != 0 || listaDatos != null)
++            {
++                
++ 
++                for (int i = 0; i < listaDatos.Count; i++)
++                {
++                    data = data + listaDatos[i] + "/n";
++                }
++
++              
++            }
++
++            //Cargar la pantalla principal
++            MainPage = new NavigationPage(new AclaraViewLogin(dialogs, data));
++
++
++        }
++
++
+         public async void HandleUrl(Uri url)
+         {
+             if (url == null)
+
+commit 87b83a7a6f085a4f6fb130420404dbec471414d9
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Oct 15 11:01:04 2018 +0200
+
+    Added external project dependencies to the Aclara Core. Debug: Added x509 encrypt/decrypt data when unfocusing email field
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 6a9ce9a..7258c1c 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -52,34 +52,7 @@ namespace aclara_meters
+             // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
+             //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
+ 
+-            /* */
+-             
+-            Console.WriteLine("\r\nExists Certs Name and Location");
+-
+-            Console.WriteLine("------ ----- -------------------------");
+-            foreach (StoreLocation storeLocation in (StoreLocation[])
+-                Enum.GetValues(typeof(StoreLocation)))
+-            {
+-                foreach (StoreName storeName in (StoreName[])
+-                    Enum.GetValues(typeof(StoreName)))
+-                {
+-                    X509Store store = new X509Store(storeName, storeLocation);
+-                    try
+-                    {
+-                        store.Open(OpenFlags.OpenExistingOnly);
+-                        Console.WriteLine("Yes    {0,4}  {1}, {2}",
+-                            store.Certificates.Count, store.Name, store.Location);
+-                    }
+-                    catch (CryptographicException)
+-                    {
+-                        Console.WriteLine("No           {0}, {1}",
+-                            store.Name, store.Location);
+-                    }
+-                }
+-                Console.WriteLine();
+-            }
+-
+-            /* */
++         
+ 
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+
+commit 38d04d82a8cb75a766a41617ecf8c08cf97f96e1
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Wed Oct 10 16:47:28 2018 +0200
+
+    Show Exists Certs Name And Location On Console (X509Store store)
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 3d9a129..6a9ce9a 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -13,6 +13,8 @@ using System.Web;
+ using System.Collections.Generic;
+ using System.Xml.Linq;
+ using System.IO;
++using System.Security.Cryptography.X509Certificates;
++using System.Security.Cryptography;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -45,18 +47,44 @@ namespace aclara_meters
+             //var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+ 
+             //var filename_meter = Path.Combine(xml_documents, "Meter.xml");
+-           // var filename_mtu = Path.Combine(xml_documents, "Mtu.xml");
++            // var filename_mtu = Path.Combine(xml_documents, "Mtu.xml");
+ 
+-           // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
+-          //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
++            // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
++            //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
+ 
++            /* */
++             
++            Console.WriteLine("\r\nExists Certs Name and Location");
++
++            Console.WriteLine("------ ----- -------------------------");
++            foreach (StoreLocation storeLocation in (StoreLocation[])
++                Enum.GetValues(typeof(StoreLocation)))
++            {
++                foreach (StoreName storeName in (StoreName[])
++                    Enum.GetValues(typeof(StoreName)))
++                {
++                    X509Store store = new X509Store(storeName, storeLocation);
++                    try
++                    {
++                        store.Open(OpenFlags.OpenExistingOnly);
++                        Console.WriteLine("Yes    {0,4}  {1}, {2}",
++                            store.Certificates.Count, store.Name, store.Location);
++                    }
++                    catch (CryptographicException)
++                    {
++                        Console.WriteLine("No           {0}, {1}",
++                            store.Name, store.Location);
++                    }
++                }
++                Console.WriteLine();
++            }
++
++            /* */
+ 
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+         }
+ 
+-
+-
+         public async void HandleUrl(Uri url)
+         {
+             if (url == null)
+
+commit fc2ed42a6b99cd6418ff01f73ecc5ff6346e2e4b
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Oct 9 16:54:54 2018 +0200
+
+    XML read from files is working
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index fa0cc7a..3d9a129 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -12,6 +12,7 @@ using ble_library;
+ using System.Web;
+ using System.Collections.Generic;
+ using System.Xml.Linq;
++using System.IO;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -40,7 +41,16 @@ namespace aclara_meters
+             ble_interface = new BleSerial(adapter);
+             //lexi = new Lexi.Lexi(ble_interface, 10000);
+ 
+-          
++            // XML FILE FTP CREATION
++            //var xml_documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
++
++            //var filename_meter = Path.Combine(xml_documents, "Meter.xml");
++           // var filename_mtu = Path.Combine(xml_documents, "Mtu.xml");
++
++           // File.WriteAllText(filename_meter, aclara_meters.Resources.XmlStrings.GetMeterString());
++          //  File.WriteAllText(filename_mtu, aclara_meters.Resources.XmlStrings.GetMTUString());
++
++
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+         }
+
+commit 0e432400b54da2474656b24b6e94d6269176a80d
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Oct 9 15:27:17 2018 +0200
+
+    Xml add mtu
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index de90466..fa0cc7a 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -21,7 +21,7 @@ namespace aclara_meters
+         public static string AppName { get { return "StoreAccountInfoApp"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
+         public static BleSerial ble_interface;
+-        public static Lexi.Lexi lexi;
++        //public static Lexi.Lexi lexi;
+ 
+         public FormsApp()
+         {
+@@ -38,7 +38,7 @@ namespace aclara_meters
+ 
+             //Inicializar libreria personalizada
+             ble_interface = new BleSerial(adapter);
+-            lexi = new Lexi.Lexi(ble_interface, 10000);
++            //lexi = new Lexi.Lexi(ble_interface, 10000);
+ 
+           
+             //Cargar la pantalla principal
+
+commit 25e634bf2ef6edecadd8b8af5928184b2b17c8bb
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Oct 8 18:07:09 2018 +0200
+
+    WIP - XML mtu parse
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index ea16a11..de90466 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -9,14 +9,9 @@ using Microsoft.AppCenter.Analytics;
+ using Microsoft.AppCenter.Crashes;
+ using Microsoft.AppCenter.Distribute;
+ using ble_library;
+-using Plugin.Settings;
+-using Lexi;
+-using System.Threading.Tasks;
+ using System.Web;
+-using System.Net.Http;
+ using System.Collections.Generic;
+ using System.Xml.Linq;
+-using System.IO;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -26,7 +21,7 @@ namespace aclara_meters
+         public static string AppName { get { return "StoreAccountInfoApp"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
+         public static BleSerial ble_interface;
+-        public static LexiComm lexi;
++        public static Lexi.Lexi lexi;
+ 
+         public FormsApp()
+         {
+@@ -43,7 +38,7 @@ namespace aclara_meters
+ 
+             //Inicializar libreria personalizada
+             ble_interface = new BleSerial(adapter);
+-            lexi = new LexiComm(ble_interface, 10000);
++            lexi = new Lexi.Lexi(ble_interface, 10000);
+ 
+           
+             //Cargar la pantalla principal
+
+commit 50817892309665ac6c11e708b0061c65cdd580ea
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Fri Oct 5 16:21:15 2018 +0200
+
+    Share works by sending encoded data in URL
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 0954247..ea16a11 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -13,6 +13,10 @@ using Plugin.Settings;
+ using Lexi;
+ using System.Threading.Tasks;
+ using System.Web;
++using System.Net.Http;
++using System.Collections.Generic;
++using System.Xml.Linq;
++using System.IO;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -77,7 +81,25 @@ namespace aclara_meters
+                         if (var1 != null)
+                         {
+                             Console.WriteLine("Var1:" + var1.ToString());
++
+                             var response3 = await Application.Current.MainPage.DisplayAlert("Alert", "script_path: " + var1.ToString(), "ok", "cancel");
++
++
++                            List<string> listaObjetos = new List<string>();
++
++                            XDocument doc = XDocument.Parse(var1);
++
++                            foreach (var item in doc.Descendants("note"))  
++                            {  
++                                string to = item.Element("to").Value.ToString();  
++                                string from = item.Element("from").Value.ToString();  
++                                string heading = item.Element("heading").Value.ToString();  
++                                string body = item.Element("body").Value.ToString();  
++                                listaObjetos.Add("To: "+to+" From: "+from+" Heading: "+heading+" Body: "+body);  
++                            }  
++
++                            await Application.Current.MainPage.DisplayAlert("Objetos XML", listaObjetos[0], "ok", "cancel");
++
+                         }
+                         var var2 = query.Get("callback");
+                         if (var2 != null)
+
+commit 6231f1d99083f22c0288079c5d528c1c866d5271
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Thu Oct 4 11:44:22 2018 +0200
+
+    App Extensions Obtain/ Share
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 813ff7e..0954247 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -11,6 +11,8 @@ using Microsoft.AppCenter.Distribute;
+ using ble_library;
+ using Plugin.Settings;
+ using Lexi;
++using System.Threading.Tasks;
++using System.Web;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -39,11 +41,77 @@ namespace aclara_meters
+             ble_interface = new BleSerial(adapter);
+             lexi = new LexiComm(ble_interface, 10000);
+ 
+-
++          
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+         }
+ 
++
++
++        public async void HandleUrl(Uri url)
++        {
++            if (url == null)
++            {
++                
++            }
++            else
++            {
++                string url_str = url.LocalPath;
++                string url_str2 = url.AbsolutePath;
++                string url_str3 = url.Scheme;
++
++            
++                var response = await Application.Current.MainPage.DisplayAlert("Alert", "Work in Progress deep linking", "ok","cancel");  
++  
++                if (response)  
++                {
++
++					String decode1 = System.Web.HttpUtility.UrlDecode(url.ToString());
++                    var uri = new Uri(decode1);
++                    var query = HttpUtility.ParseQueryString(uri.Query);
++
++                  
++                    try
++                    {
++                        var var1 = query.Get("script_path");
++                        if (var1 != null)
++                        {
++                            Console.WriteLine("Var1:" + var1.ToString());
++                            var response3 = await Application.Current.MainPage.DisplayAlert("Alert", "script_path: " + var1.ToString(), "ok", "cancel");
++                        }
++                        var var2 = query.Get("callback");
++                        if (var2 != null)
++                        {
++                            Console.WriteLine("Var2:" + var2.ToString());
++                            var response2 = await Application.Current.MainPage.DisplayAlert("Alert", "callback: " + var2.ToString(), "ok", "cancel");
++                            /**/
++                            var uri2 = new Uri(var2);
++                            var query2 = HttpUtility.ParseQueryString(uri2.Query);
++                            var var12 = query2.Get("param");
++                            String cabecera = var2.Replace(var12, "");
++                            String datos = System.Web.HttpUtility.UrlEncode(var12);
++                            Xamarin.Forms.Device.OpenUri(new Uri(cabecera + datos));
++
++                        }
++                       
++
++
++                    }catch(Exception e)
++                    {
++                        Console.WriteLine(e.StackTrace);
++                    }
++
++                }  
++      
++                else  
++                {  
++                   //user click cancel  
++                
++                }  
++
++            }
++        }
++
+         protected override void OnStart()
+         {
+             AppCenter.Start("ios=cb622ad5-e2ad-469d-b1cd-7461f140b2dc;" + "android=53abfbd5-4a3f-4eb2-9dea-c9f7810394be", typeof(Analytics), typeof(Crashes), typeof(Distribute) );
+
+commit 979bc7ffca470209e7b56f64db8b8d49cdf87f72
+Author: Martxel <m.lasa@bizintekinnova.com>
+Date:   Tue Sep 18 16:46:59 2018 +0200
+
+    Create lexi instance.
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 58bd2a1..813ff7e 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -10,6 +10,7 @@ using Microsoft.AppCenter.Crashes;
+ using Microsoft.AppCenter.Distribute;
+ using ble_library;
+ using Plugin.Settings;
++using Lexi;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -19,6 +20,7 @@ namespace aclara_meters
+         public static string AppName { get { return "StoreAccountInfoApp"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
+         public static BleSerial ble_interface;
++        public static LexiComm lexi;
+ 
+         public FormsApp()
+         {
+@@ -35,6 +37,8 @@ namespace aclara_meters
+ 
+             //Inicializar libreria personalizada
+             ble_interface = new BleSerial(adapter);
++            lexi = new LexiComm(ble_interface, 10000);
++
+ 
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+
+commit 26a166437e3a2d1bfca8793e392d493611a4163a
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Fri Aug 31 15:20:03 2018 +0200
+
+    Presentation between nRF52 and application: The device connects again with a paired mobile
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index f4c77a9..58bd2a1 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -9,7 +9,7 @@ using Microsoft.AppCenter.Analytics;
+ using Microsoft.AppCenter.Crashes;
+ using Microsoft.AppCenter.Distribute;
+ using ble_library;
+-
++using Plugin.Settings;
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -30,15 +30,14 @@ namespace aclara_meters
+         {
+             InitializeComponent();
+ 
+-            //Inicializar libreria personalizada
+-            ble_interface = new BleSerial(adapter);
+-
+             //Gestor de cuentas
+             CredentialsService = new CredentialsService();
+ 
++            //Inicializar libreria personalizada
++            ble_interface = new BleSerial(adapter);
++
+             //Cargar la pantalla principal
+             MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+-
+         }
+ 
+         protected override void OnStart()
+
+commit 9733f370daedbec8cd528bfbd340be25c560da15
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Aug 27 16:02:09 2018 +0200
+
+    App Code Cleanup Part IV
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index c879420..f4c77a9 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -37,7 +37,7 @@ namespace aclara_meters
+             CredentialsService = new CredentialsService();
+ 
+             //Cargar la pantalla principal
+-            MainPage = new NavigationPage(new LoginMenuPage(dialogs));
++            MainPage = new NavigationPage(new AclaraViewLogin(dialogs));
+ 
+         }
+ 
+
+commit 77b1fc1c46b5139c532199533f48f2f735755968
+Author: Ruben del Cura <r.delcura@bizintekinnova.com>
+Date:   Thu Aug 23 10:27:00 2018 +0200
+
+    BlePort revision
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 78a6c8a..c879420 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -31,9 +31,7 @@ namespace aclara_meters
+             InitializeComponent();
+ 
+             //Inicializar libreria personalizada
+-            ble_interface = new BleSerial("Ble Port");
+-            ble_interface.InitConfig(adapter, dialogs);
+-
++            ble_interface = new BleSerial(adapter);
+ 
+             //Gestor de cuentas
+             CredentialsService = new CredentialsService();
+
+commit e36897eb496323fe5af2803fde1e69b319515df7
+Author: Ruben del Cura <r.delcura@bizintekinnova.com>
+Date:   Wed Aug 22 15:31:29 2018 +0200
+
+    BleSerial revision
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index b033884..78a6c8a 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -32,7 +32,7 @@ namespace aclara_meters
+ 
+             //Inicializar libreria personalizada
+             ble_interface = new BleSerial("Ble Port");
+-            ble_interface.initConfig(adapter, dialogs);
++            ble_interface.InitConfig(adapter, dialogs);
+ 
+ 
+             //Gestor de cuentas
+
+commit 95315c61a58623409afa8372918ad72a6547f302
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Aug 21 15:43:00 2018 +0200
+
+    Ble library interface implemented -> Read and Write methods included
+    Added Read data (with params offset and count call), from FormsApp
+    FIFO push byte arrays from BlePort
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 247de02..b033884 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -18,6 +18,7 @@ namespace aclara_meters
+     {
+         public static string AppName { get { return "StoreAccountInfoApp"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
++        public static BleSerial ble_interface;
+ 
+         public FormsApp()
+         {
+@@ -30,7 +31,9 @@ namespace aclara_meters
+             InitializeComponent();
+ 
+             //Inicializar libreria personalizada
+-            BleMainClass.init(adapter, dialogs);
++            ble_interface = new BleSerial("Ble Port");
++            ble_interface.initConfig(adapter, dialogs);
++
+ 
+             //Gestor de cuentas
+             CredentialsService = new CredentialsService();
+
+commit 4f5bb63bf57a760c81e08d3e2f272142ffe5208d
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Tue Aug 7 14:45:11 2018 +0200
+
+    Interfaces and basic scan, connection and services listing functions added
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index 18b8afe..247de02 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -16,7 +16,6 @@ namespace aclara_meters
+ {
+     public partial class FormsApp : Application
+     {
+-
+         public static string AppName { get { return "StoreAccountInfoApp"; } }
+         public static ICredentialsService CredentialsService { get; private set; }
+ 
+@@ -31,7 +30,7 @@ namespace aclara_meters
+             InitializeComponent();
+ 
+             //Inicializar libreria personalizada
+-            InicializarLibreriaBLE(adapter,dialogs);
++            BleMainClass.init(adapter, dialogs);
+ 
+             //Gestor de cuentas
+             CredentialsService = new CredentialsService();
+@@ -41,18 +40,6 @@ namespace aclara_meters
+ 
+         }
+ 
+-
+-        private void InicializarLibreriaBLE(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs)
+-        {
+-
+-            BleMainClass.init(adapter,dialogs);
+-
+-
+-                  
+-
+-        }
+-
+-
+         protected override void OnStart()
+         {
+             AppCenter.Start("ios=cb622ad5-e2ad-469d-b1cd-7461f140b2dc;" + "android=53abfbd5-4a3f-4eb2-9dea-c9f7810394be", typeof(Analytics), typeof(Crashes), typeof(Distribute) );
+
+commit a6e3ae9b55f9738c02cf0ed7a817aafe9caa5684
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Mon Aug 6 16:01:10 2018 +0200
+
+    BLE Library and scan
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+index de12316..18b8afe 100644
+--- a/aclara_meters/FormsApp.xaml.cs
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -8,6 +8,8 @@ using Microsoft.AppCenter;
+ using Microsoft.AppCenter.Analytics;
+ using Microsoft.AppCenter.Crashes;
+ using Microsoft.AppCenter.Distribute;
++using ble_library;
++
+ 
+ [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+ namespace aclara_meters
+@@ -24,13 +26,33 @@ namespace aclara_meters
+             CredentialsService = new CredentialsService();
+         }
+ 
+-        public FormsApp( IUserDialogs dialogs)
++        public FormsApp(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs)
+         {
+             InitializeComponent();
++
++            //Inicializar libreria personalizada
++            InicializarLibreriaBLE(adapter,dialogs);
++
++            //Gestor de cuentas
+             CredentialsService = new CredentialsService();
++
++            //Cargar la pantalla principal
+             MainPage = new NavigationPage(new LoginMenuPage(dialogs));
++
++        }
++
++
++        private void InicializarLibreriaBLE(IBluetoothLowEnergyAdapter adapter, IUserDialogs dialogs)
++        {
++
++            BleMainClass.init(adapter,dialogs);
++
++
++                  
++
+         }
+ 
++
+         protected override void OnStart()
+         {
+             AppCenter.Start("ios=cb622ad5-e2ad-469d-b1cd-7461f140b2dc;" + "android=53abfbd5-4a3f-4eb2-9dea-c9f7810394be", typeof(Analytics), typeof(Crashes), typeof(Distribute) );
+
+commit 6e2007e69dcd484d3efb959bcacc7857a904fdc3
+Author: Miguel Angel Jimenez <ma.jimenez@bizintekinnova.com>
+Date:   Fri Aug 3 13:02:32 2018 +0200
+
+    Mock App without BLE library calls
+
+diff --git a/aclara_meters/FormsApp.xaml.cs b/aclara_meters/FormsApp.xaml.cs
+new file mode 100644
+index 0000000..de12316
+--- /dev/null
++++ b/aclara_meters/FormsApp.xaml.cs
+@@ -0,0 +1,47 @@
++using System;
++using Acr.UserDialogs;
++using aclara_meters.view;
++using nexus.protocols.ble;
++using Xamarin.Forms;
++using Xamarin.Forms.Xaml;
++using Microsoft.AppCenter;
++using Microsoft.AppCenter.Analytics;
++using Microsoft.AppCenter.Crashes;
++using Microsoft.AppCenter.Distribute;
++
++[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
++namespace aclara_meters
++{
++    public partial class FormsApp : Application
++    {
++
++        public static string AppName { get { return "StoreAccountInfoApp"; } }
++        public static ICredentialsService CredentialsService { get; private set; }
++
++        public FormsApp()
++        {
++            InitializeComponent();
++            CredentialsService = new CredentialsService();
++        }
++
++        public FormsApp( IUserDialogs dialogs)
++        {
++            InitializeComponent();
++            CredentialsService = new CredentialsService();
++            MainPage = new NavigationPage(new LoginMenuPage(dialogs));
++        }
++
++        protected override void OnStart()
++        {
++            AppCenter.Start("ios=cb622ad5-e2ad-469d-b1cd-7461f140b2dc;" + "android=53abfbd5-4a3f-4eb2-9dea-c9f7810394be", typeof(Analytics), typeof(Crashes), typeof(Distribute) );
++        }
++
++        protected override void OnSleep()
++        {
++        }
++
++        protected override void OnResume()
++        {
++        }
++    }
++}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MtuScript>
+	<userName>singh</userName>	
+    <logFile>AddResult.xml</logFile>
+    <action type="AddMtu">
+        <ReadInterval>4 hrs</ReadInterval>
+        <ActivityLogId>56657867</ActivityLogId>
+        <WorkOrderSystem>Roli Singh Test</WorkOrderSystem> <!-- FALTA -->
+        <AccountNumber Port="1">123456789</AccountNumber> <!-- FALTA -->
+        <WorkOrder Port="1">123456789123456789</WorkOrder> <!-- FALTA -->
+        <MeterSerialNumber Port="1">987654321</MeterSerialNumber> <!-- FALTA -->
+        <MeterType Port="1">5000</MeterType>
+        <MeterReading Port="1">888888</MeterReading>
+	</action>
+</MtuScript>

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<Alarms>
+	<Alarm MTUType="72" Name="Alarm Enabled">
+		<ImmediateAlarmTransmit>true</ImmediateAlarmTransmit>
+		<DcuUrgentAlarm>false</DcuUrgentAlarm>
+	</Alarm>
+	<Alarm MTUType="72" Name="Scripting">
+		<ImmediateAlarmTransmit>true</ImmediateAlarmTransmit>
+		<DcuUrgentAlarm>false</DcuUrgentAlarm>
+	</Alarm>
+	<Alarm MTUType="56" Name="Alarms Enabled">
+		<MessageSendTime>10</MessageSendTime>
+		<OutageMessageCount>5</OutageMessageCount>
+		<RestoreMessageCount>5</RestoreMessageCount>
+		<!-- Valid values are Delayed or Quick -->
+		<Response>Quick</Response>
+		<!-- Valid values are 11/12%, 50%, none -->
+		<Overlap>11/12%</Overlap>
+		<!-- Valid values are true or false-->
+		<ReversePowerAlarm>true</ReversePowerAlarm>
+		<!-- Valid values are ints -->
+		<AlarmMessages>10</AlarmMessages>
+		<!-- Valid values are true or false -->
+		<ImmediateTransmit>true</ImmediateTransmit>
+		<!-- Valid values are true or false-->
+		<UrgentAlarm>true</UrgentAlarm>
+		<!-- Valid values are true or false -->
+		<HardErrorAlarm>true</HardErrorAlarm>
+	</Alarm>
+	<Alarm MTUType="56" Name="Alarms Disabled">
+		<MessageSendTime>10</MessageSendTime>
+		<OutageMessageCount>1</OutageMessageCount>
+		<RestoreMessageCount>1</RestoreMessageCount>
+		<!-- Valid values are Delayed or Quick -->
+		<Response>Delayed</Response>
+		<!-- Valid values are 11/12%, 50%, none -->
+		<Overlap>None</Overlap>
+		<!-- Valid values are true or false-->
+		<ReversePowerAlarm>false</ReversePowerAlarm>
+		<!-- Valid values are ints -->
+		<AlarmMessages>2</AlarmMessages>
+		<!-- Valid values are true or false -->
+		<ImmediateTransmit>false</ImmediateTransmit>
+		<!-- Valid values are true or false-->
+		<UrgentAlarm>false</UrgentAlarm>
+		<!-- Valid values are true or false -->
+		<HardErrorAlarm>false</HardErrorAlarm>
+	</Alarm>
+	<Alarm MTUType="74" Name="Residential">
+		<MessageSendTime>10</MessageSendTime>
+		<PowerOutDelay>60</PowerOutDelay>
+		<PowerRestoreDelay>60</PowerRestoreDelay>
+		<OutageMessageCount>2</OutageMessageCount>
+		<RestoreMessageCount>2</RestoreMessageCount>
+		<AlarmMask1>255</AlarmMask1>
+		<AlarmMask2>255</AlarmMask2>
+		<SyncTimeout>48</SyncTimeout>
+		<SyncDrift>5</SyncDrift>
+	</Alarm>
+	<Alarm MTUType="74" Name="Commercial">
+		<MessageSendTime>5</MessageSendTime>
+		<PowerOutDelay>5</PowerOutDelay>
+		<PowerRestoreDelay>5</PowerRestoreDelay>
+		<OutageMessageCount>5</OutageMessageCount>
+		<RestoreMessageCount>5</RestoreMessageCount>
+		<AlarmMask1>255</AlarmMask1>
+		<AlarmMask2>255</AlarmMask2>
+		<SyncTimeout>48</SyncTimeout>
+		<SyncDrift>5</SyncDrift>
+	</Alarm>
+	<Alarm MTUType="74" Name="V.I.P.">
+		<MessageSendTime>1</MessageSendTime>
+		<PowerOutDelay>1</PowerOutDelay>
+		<PowerRestoreDelay>1</PowerRestoreDelay>
+		<OutageMessageCount>10</OutageMessageCount>
+		<RestoreMessageCount>3</RestoreMessageCount>
+		<AlarmMask1>255</AlarmMask1>
+		<AlarmMask2>255</AlarmMask2>
+		<SyncTimeout>48</SyncTimeout>
+		<SyncDrift>5</SyncDrift>
+	</Alarm>
+	<Alarm MTUType="74" Name="Deadbeat">
+		<MessageSendTime>200</MessageSendTime>
+		<PowerOutDelay>120</PowerOutDelay>
+		<PowerRestoreDelay>120</PowerRestoreDelay>
+		<OutageMessageCount>0</OutageMessageCount>
+		<RestoreMessageCount>0</RestoreMessageCount>
+		<AlarmMask1>255</AlarmMask1>
+		<AlarmMask2>255</AlarmMask2>
+		<SyncTimeout>48</SyncTimeout>
+		<SyncDrift>5</SyncDrift>
+	</Alarm>
+</Alarms>
